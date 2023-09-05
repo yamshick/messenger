@@ -6,7 +6,13 @@ const server = app.listen(PORT, () => console.log(`💬 server on port ${PORT}`)
 
 const io = require('socket.io')(server)
 
+const sqlite3 = require('sqlite3');
+const db = new sqlite3.Database('app/db/sqlite.db');
+
+require('./app/routes')(app, db);
+
 app.use(express.static(path.join(__dirname, 'public')))
+
 
 let socketsConected = new Set()
 

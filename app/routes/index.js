@@ -1,5 +1,5 @@
-const getRoutes = require('./product-get-route');
-const postRoutes = require('./product-post-route');
+const getRoutes = require('./get-routes');
+const postRoutes = require('./post-routes');
 const putRoutes = require('./product-put-route');
 const deleteRoutes = require('./product-delete-route');
 const loadDatabase = require('../db/setup-database');

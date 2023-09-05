@@ -88,3 +88,25 @@ function clearFeedback() {
     element.parentNode.removeChild(element)
   })
 }
+
+
+(async() => {
+await fetch('/api/chat', {
+  body: JSON.stringify({name: 'test-chat', users: [1, 2]}),
+  method: "POST",
+//    mode: "cors", // no-cors, *cors, same-origin
+//    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+//    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    // redirect: "follow", // manual, *follow, error
+    // referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    // body: JSON.stringify({name: 'test-chat', users: [1, 2]}),
+  })
+})();
+
+fetch('/api/chat/id/1').then(res => res.json()).then(console.log)
+
+fetch('/api/chats/user/1').then(res => res.json()).then(console.log)

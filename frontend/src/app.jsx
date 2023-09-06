@@ -18,7 +18,6 @@ import messageToneRaw from '../assets/message-tone.mp3'
 const socket = io();
 
 const messageTone = new Audio(messageToneRaw);
-console.log({messageTone})
 
 export const App = () => {
   const [clientsCount, setClientsCount] = useState(1);
@@ -70,7 +69,7 @@ export const App = () => {
   };
 
   socket.on("chat-message", (data) => {
-    console.log(data)
+    console.log({data})
     messageTone.play();
     // setMessages([...messages, { ownMessage:, data }]);
     addMessageToUI(false, data);
@@ -114,7 +113,7 @@ export const App = () => {
               className={isOwnMessage ? "message-right" : "message-left"}
             >
               <p className="message">
-                ${data.message}
+                {data.message}
                 <span>
                   {data.name} ● {moment(data.dateTime).fromNow()}
                 </span>

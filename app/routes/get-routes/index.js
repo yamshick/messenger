@@ -1,4 +1,16 @@
 module.exports = function (app, db) {
+
+  app.get("/api/users/:loginPredicate", (req, res) => {
+    const predicate = req.params.loginPredicate;
+    console.log({predicate})
+    if (!predicate) {
+      return res.json([]);
+    }
+    const sql = `SELECT * FROM Users WHERE LOGIN LIKE '${predicate}%'`;
+    processData(res, sql);
+    // processData(res, "SELECT * FROM Chats where id == "+req.params.userId);
+  });
+
   app.get("/api/chats/user/:login", (req, res) => {
     processData(res, "SELECT * FROM Chats");
     // processData(res, "SELECT * FROM Chats where id == "+req.params.userId);
@@ -73,7 +85,8 @@ module.exports = function (app, db) {
   function sendData(res, data, err) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    if (data[0]) res.send(data);
+    console.log({data})
+    if (data) res.send(data);
     else {
       res.status(404).send("Chat not found");
     }

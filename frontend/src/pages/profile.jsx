@@ -7,6 +7,7 @@ import { authSlice } from "../store/reducers/auth-slice";
 import styles from "./page.css";
 // import { Chat } from "../chats/chat";
 import { Messenger } from "../messenger/messenger";
+import { UsersSearch } from "../users-search/users-search";
 
 export const Profile = () => {
   const { isAuth, userName, userId, login } = useSelector(
@@ -27,8 +28,20 @@ export const Profile = () => {
         <div className={styles.formContainer}>
           <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
           {/* <Chat /> */}
-          <Messenger userName={userName}/>
-          <Button onClick={onLogout}>Выйти</Button>
+          <div style={{display: 'flex', flexDirection: 'space-between', border: 'solid 1px', width: '100%'}}>
+            <div>
+            <div>
+             <UsersSearch />
+            </div>
+            <div>
+              USERS LIST
+            </div>
+            </div>
+            <div>
+              <Messenger userName={userName}/>
+              <Button onClick={onLogout}>Выйти</Button>
+            </div>
+          </div>
         </div>
       ) : (
         <Navigate to={hashRoutes.LOGIN} />

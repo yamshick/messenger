@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { reducer as authReducer } from "./reducers/auth-slice";
+import { reducer as usersReducer } from "./reducers/users-slice";
 import { LOCAL_STORAGE_STATE_KEY } from "../local-storage";
 
 const rootReducer = combineReducers({
   authReducer,
+  usersReducer
 });
 
 const localStorageMiddleware = (store) => (next) => (action) => {
@@ -15,6 +17,7 @@ const localStorageMiddleware = (store) => (next) => (action) => {
   );
   return result;
 };
+
 export const setupStore = () => {
   return configureStore({
     reducer: rootReducer,

@@ -14,12 +14,24 @@ module.exports = function (app, db) {
     // [
     //     {...},{...}
     // ]
+    app.post('/api/register/', (req, res) => {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+
+         const data = req.body;
+         console.log('register', {data})
+         processUser(req, res, db);
+         
+    //     if((data.constructor === Array))
+    //        processProducts(req, res, db);
+    //     else
+    });
+
     app.post('/api/chat/', (req, res) => {
         res.setHeader("Access-Control-Allow-Origin", "*");
 
          const data = req.body;
          console.log({data})
-         processChat(req, res, db);
+         processUser(req, res, db);
          
     //     if((data.constructor === Array))
     //        processProducts(req, res, db);
@@ -31,6 +43,11 @@ function processProducts(req, res, db){
     for (var prod of req.body) {
         insertChat(prod, res, db);
     }
+}
+
+function processUser(req, res, db){
+    validateRequest(req, res);
+    insertUser(req.body, res, db);
 }
 
 function processChat(req, res, db){
@@ -51,6 +68,57 @@ function insertChat(chat, res, db){
 
     db.serialize(function () {
         db.run(sql, values, function (err) {
+            if (err){
+                console.error(err);
+                res.status(500).send(err);
+            }
+                
+            else
+                res.send();
+        });
+    });
+}
+
+function insertUser(user, res, db){
+	const {firstName, secondName, login, password} = user
+
+    // TODO
+    const validateUserSql = `select * from Users where login = ?`;
+    db.all(validateUserSql, [login], (err, rows) => {
+        if (err){
+            console.error(err);
+            res.status(500).send(err);
+        }
+
+        // rows.forEach((row) => {
+        //   console.log('__found: ', {row});
+        // });
+
+        if (rows.length) {
+            res.status(409).send(JSON.stringify({error: 'User with such login exists'}));
+        }
+      });
+
+    db.serialize(function () {
+        db.run(validateUserSql, function (err) {
+            if (err){
+                console.error(err);
+                res.status(500).send(err);
+            }
+                
+            else
+                res.send();
+        });
+    });
+
+    const insertUserSql = `insert into Users (first_name, second_name, login, password) 
+            VALUES 
+            (?, ?, ?, ?);`;
+
+    const values = [firstName,secondName || '', login, password];
+
+    db.serialize(function () {
+        db.run(insertUserSql, values, function (err) {
             if (err){
                 console.error(err);
                 res.status(500).send(err);

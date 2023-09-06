@@ -33,7 +33,7 @@ export const Registration = () => {
     setIsLoading(true);
     try {
       const res = await dispatch(
-        registerThunk({ name, login, password })
+        registerThunk({ firstName: name, secondName: '', login, password })
       ).unwrap();
       if (res.error) {
         setErrorMessage(res.error?.message);

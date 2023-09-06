@@ -24,6 +24,18 @@ module.exports = function (app, db) {
   // [
   //     {...},{...}
   // ]
+  app.post("/api/login/", (req, res) => {
+    // res.setHeader("Access-Control-Allow-Origin", "*");
+
+    const data = req.body;
+    console.log("login", { data });
+    processLogin(req, res, db);
+
+    //     if((data.constructor === Array))
+    //        processProducts(req, res, db);
+    //     else
+  });
+
   app.post("/api/register/", (req, res) => {
     // res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -53,6 +65,11 @@ function processProducts(req, res, db) {
   for (var prod of req.body) {
     insertChat(prod, res, db);
   }
+}
+
+function processLogin(req, res, db) {
+  validateRequest(req, res);
+  loginUser(req.body, res, db);
 }
 
 function processUser(req, res, db) {
@@ -111,7 +128,7 @@ async function validateRegistration(user, res, db) {
   //     // }
   //   });
 
-  console.log("__found", { result });
+  console.log("__found on registration", { result });
   if (result.length) {
     // userExists = false;
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -120,6 +137,34 @@ async function validateRegistration(user, res, db) {
     return res
       .status(409)
       .send(JSON.stringify({ error: "User with such login exists" }));
+  }
+}
+
+async function loginUser(data, res, db) {
+  const { login, password } = data;
+
+  const sql = `select * from Users where login = ?`;
+  const users = await db_all(db, sql, [login]);
+  const user = users?.[0] || null
+
+  console.log("__found on login", { users });
+  if (!user) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.status(403).json({error: 'User with such login doesnot exist'})
+    return res.send()
+  } else if (user.login === login && user.password !== password) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.status(403).json({error: 'Wrong password'})
+    return res.send()
+  } else if (user.login === login && user.password === password) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    return res.json({
+      user: {
+        name: user.first_name,
+        login: user.login,  
+      },
+      message: 'Logged in successfully'
+    }).send()
   }
 }
 

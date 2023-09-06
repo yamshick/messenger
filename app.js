@@ -17,7 +17,7 @@ const db = new sqlite3.Database('app/db/sqlite.db');
 
 require('./app/routes')(app, db);
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'frontend/dist')))
 
 // app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(bodyParser.json());

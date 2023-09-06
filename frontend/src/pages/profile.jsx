@@ -23,7 +23,7 @@ export const Profile = () => {
 
   return (
     <>
-      {isAuth  || true ? (
+      {isAuth || true ? (
         <div className={styles.formContainer}>
           <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
           {/* <Chat /> */}

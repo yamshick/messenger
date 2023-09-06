@@ -1,16 +1,18 @@
 module.exports = {
-  parser: "@babel/eslint-parser",
+  // parser: "@babel/eslint-parser",
   env: {
     browser: true,
     es2020: true,
   },
   extends: ["plugin:react/recommended", "prettier"],
   parserOptions: {
+    requireConfigFile: false,
     ecmaFeatures: {
       jsx: true,
     },
     ecmaVersion: 11,
     sourceType: "module",
+    parser: "@babel/eslint-parser",
   },
   plugins: ["react", "prettier"],
   rules: {

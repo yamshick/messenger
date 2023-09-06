@@ -1,0 +1,18 @@
+.nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.navLink {
+    text-decoration: none;
+    color: black;
+}
+
+/*.navLink:hover {*/
+/*    color: #F16662;*/
+/*}*/
+
+.navLinkSelected {
+    color: #F16662;
+}

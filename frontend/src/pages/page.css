@@ -1,0 +1,15 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+.hider {
+    visibility: hidden;
+}
+
+.textMessage {
+    margin-bottom: 20px;
+}

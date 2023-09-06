@@ -25,10 +25,14 @@ module.exports = {
         ],
       },
       {
+        test: /\.style$/,
+        use: ["style-loader", "css-loader"],
+      },
+      {
         test: /\.mp3$/,
         // include: SRC,
-        loader: 'file-loader'
-    }
+        loader: "file-loader",
+      },
     ],
   },
   resolve: {

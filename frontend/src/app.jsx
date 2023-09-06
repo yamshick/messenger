@@ -9,11 +9,10 @@
 
 // import styles from "./styles/style.css";
 import { useState } from "react";
-import "./styles/style.css";
+import "./styles/style.style";
 import { io } from "socket.io-client";
 import moment from "moment";
-import messageToneRaw from '../assets/message-tone.mp3'
-// console.log(stules)
+import messageToneRaw from "../assets/message-tone.mp3";
 
 const socket = io();
 
@@ -27,10 +26,10 @@ export const App = () => {
   const [feedback, setFeedback] = useState([]);
 
   socket.on("clients-total", (data) => {
-    console.log('clients-total', {data})
-    setClientsCount(data)
+    console.log("clients-total", { data });
+    setClientsCount(data);
   });
-  
+
   const onNameChange = (event) => {
     // console.log({event})
     setNameInput(event.target.value);
@@ -68,8 +67,10 @@ export const App = () => {
     scrollToBottom();
   };
 
+  console.log({ messages });
+
   socket.on("chat-message", (data) => {
-    console.log({data})
+    console.log({ data });
     messageTone.play();
     // setMessages([...messages, { ownMessage:, data }]);
     addMessageToUI(false, data);
@@ -107,10 +108,10 @@ export const App = () => {
         </div>
 
         <ul className="message-container" id="message-container">
-          {messages.map(({ isOwnMessage, data }, idx) => (
+          {messages.map(({ ownMessage, data }) => (
             <li
-              key={idx}
-              className={isOwnMessage ? "message-right" : "message-left"}
+              key={data.dateTime}
+              className={ownMessage ? "message-right" : "message-left"}
             >
               <p className="message">
                 {data.message}

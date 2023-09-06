@@ -176,7 +176,7 @@ async function loginUser(data, res, db) {
       .json({
         user: {
           id: user.id,
-          name: user.first_name,
+          name: user.firstName,
           login: user.login,
           role: user.role,
         },
@@ -189,7 +189,7 @@ async function loginUser(data, res, db) {
 function insertUser(user, res, db) {
   const { firstName, secondName, login, password } = user;
 
-  const insertUserSql = `insert into Users (first_name, second_name, login, password, role) 
+  const insertUserSql = `insert into Users (firstName, secondName, login, password, role) 
             VALUES 
             (?, ?, ?, ?, ?);`;
 

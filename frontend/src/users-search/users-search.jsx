@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsersThunk, usersSlice } from "../store/reducers/users-slice";
+import { chatsSlice } from "../store/reducers/chat-slice";
 
 export const UsersSearch = ({
   value: loginPredicate,
@@ -11,6 +12,7 @@ export const UsersSearch = ({
     (state) => console.log({ state }) || state.usersReducer
   );
   const { setUsers } = usersSlice.actions;
+  const { setActiveChat } = chatsSlice.actions;
 
   console.log({ users });
   const dispatch = useDispatch();
@@ -51,12 +53,19 @@ export const UsersSearch = ({
     onChangeProp && onChangeProp(value);
   };
 
+  const onUserClick = (user) => {
+    dispatch(setActiveChat({
+        name: `Чат с ${user.firstName}`,
+        members: [user]
+    }))
+  }
+
   return (
     <div>
       <input value={predicate} onChange={onChange} />
       <ul>
         {users &&
-          users.map((user, idx) => <li key={idx}>{JSON.stringify(user)}</li>)}
+          users.map((user, idx) => <li key={idx} onClick={() => onUserClick(user)}>{JSON.stringify(user)}</li>)}
       </ul>
     </div>
   );

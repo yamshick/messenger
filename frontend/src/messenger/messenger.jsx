@@ -8,7 +8,10 @@ const socket = io();
 
 const messageTone = new Audio(messageToneRaw);
 
-export const Messenger = ({ userName }) => {
+export const Messenger = ({ userName, userId, login, chat }) => {
+  // console.log({chat})
+  if (!chat) return null;
+
   const [clientsCount, setClientsCount] = useState(1);
   const [nameInput, setNameInput] = useState(userName);
   // TODO
@@ -75,6 +78,9 @@ export const Messenger = ({ userName }) => {
       name: nameInput,
       message: messageInput,
       dateTime: new Date(),
+      userId,
+      login,
+      chat,
     };
     socket.emit("message", data);
     addMessageToUI(true, data);
@@ -83,7 +89,7 @@ export const Messenger = ({ userName }) => {
 
   return (
     <>
-      <h1 className="title">iChat 💬</h1>
+      <h1 className="title">{chat.name} 💬</h1>
       <div className="main">
         <div className="name">
           <span>

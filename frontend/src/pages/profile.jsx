@@ -14,11 +14,14 @@ export const Profile = () => {
   const { isAuth, userName, userId, login, role } = useSelector(
     (state) => state.authReducer
   );
+  const {activeChat} = useSelector(state => state.chatsReducer)
+
   const { setUser, setIsAuth } = authSlice.actions;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onLogout = () => {
     dispatch(setIsAuth(false));
+    // Разобраться
     dispatch(setUser({ id: userId, name: userName, login }));
     navigate(hashRoutes.LOGIN);
   };
@@ -47,7 +50,7 @@ export const Profile = () => {
               </div>
             </div>
             <div>
-              <Messenger userName={userName} />
+              <Messenger chat={activeChat} userName={userName} userId={userId} login={login}/>
               <Button onClick={onLogout}>Выйти</Button>
             </div>
           </div>

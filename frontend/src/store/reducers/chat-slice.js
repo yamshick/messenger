@@ -3,6 +3,7 @@ import { FETCH_CHATS, FETCH_USERS } from "../../api/constants";
 import { httpService } from "../../service/http-service";
 
 const initialState = {
+    activeChat: null,
   chats: [],
 };
 
@@ -21,7 +22,12 @@ export const chatsSlice = createSlice({
     setChats(state, action) {
       console.warn({ action });
       state.chats = action.payload;
+      state.activeChat = Array.isArray(action.payload) ? 
+      action.payload[0] : null;
     },
+    setActiveChat(state, action) {
+        state.activeChat = action.payload
+    }
   },
 });
 

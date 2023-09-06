@@ -48,7 +48,7 @@ function onConnected(socket) {
   })
 
   socket.on('message', (data) => {
-    // console.log(data)
+    console.log(data)
     socket.broadcast.emit('chat-message', data)
   })
 

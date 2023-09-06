@@ -15,7 +15,9 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   const [clientsCount, setClientsCount] = useState(1);
   const [nameInput, setNameInput] = useState(userName);
   // TODO
-  useEffect(() => {setNameInput(userName)}, [userName])
+  useEffect(() => {
+    setNameInput(userName);
+  }, [userName]);
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [feedback, setFeedback] = useState([]);

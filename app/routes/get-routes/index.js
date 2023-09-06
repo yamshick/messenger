@@ -10,14 +10,41 @@ module.exports = function (app, db) {
     // processData(res, "SELECT * FROM Chats where id == "+req.params.userId);
   });
 
+  app.get("/api/chat", (req, res) => {
+    const { userIds } = req.query;
+    const sortedUserIds = userIds
+      .split(",")
+      .map(Number)
+      .sort((a, b) => a - b)
+      .join(",");
+    console.log("/api/chat", { userIds, sortedUserIds });
+    processData(
+      res,
+      `SELECT * FROM Chats where USERS == '${sortedUserIds}'`,
+      {}
+    );
+
+    // processData(res, `
+    //   SELECT * FROM Chats
+    //   WHERE
+    //     USERS LIKE '%,${userId}%' OR
+    //     USERS LIKE '${userId},%'
+    //   `);
+    // return res.send();
+    // processData(res, "SELECT * FROM Chats where id == "+req.params.userId);
+  });
+
   app.get("/api/chats/:userId", (req, res) => {
-    const userId = req.params.userId
-    processData(res, `
+    const userId = req.params.userId;
+    processData(
+      res,
+      `
       SELECT * FROM Chats 
       WHERE 
         USERS LIKE '%,${userId}%' OR
         USERS LIKE '${userId},%'
-      `);
+      `
+    );
     // processData(res, "SELECT * FROM Chats where id == "+req.params.userId);
   });
 
@@ -76,24 +103,27 @@ module.exports = function (app, db) {
     );
   });
 
-  function processData(res, sql) {
+  function processData(res, sql, emptyResponse) {
     db.serialize(function () {
       db.all(sql, function (err, rows) {
         if (err) {
           console.error(err);
           res.status(500).send(err);
-        } else sendData(res, rows, err);
+        } else sendData(res, rows, err, emptyResponse);
       });
     });
   }
 
-  function sendData(res, data, err) {
+  function sendData(res, data, err, emptyResponse) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     console.log({ data });
-    if (data) res.send(data);
-    else {
-      res.status(404).send("Chat not found");
+    if (data && !data.length) {
+      res.send(emptyResponse);
+    } else if (data) {
+      res.send(data);
+    } else {
+      res.status(404).send("Not found");
     }
   }
 };

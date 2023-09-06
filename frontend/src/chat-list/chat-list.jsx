@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchChatsThunk, chatsSlice } from "../store/reducers/chat-slice";
 import { authSlice } from "../store/reducers/auth-slice";
 
-export const ChatList = ({
-//   value: loginPredicate,
-//   onChange: onChangeProp,
-}) => {
+export const ChatList = (
+  {
+    //   value: loginPredicate,
+    //   onChange: onChangeProp,
+  }
+) => {
   const { setChats } = chatsSlice.actions;
 
   const { userId } = useSelector((state) => state.authReducer);
-  const {chats} = useSelector(state => state.chatsReducer)
+  const { chats } = useSelector((state) => state.chatsReducer);
 
   const dispatch = useDispatch();
 
@@ -21,9 +23,7 @@ export const ChatList = ({
     }
 
     try {
-      const res = await dispatch(
-        fetchChatsThunk({ userId })
-      ).unwrap();
+      const res = await dispatch(fetchChatsThunk({ userId })).unwrap();
       if (res.error) {
         console.error(res.error);
         //   setErrorMessage(res.error?.message);
@@ -38,7 +38,6 @@ export const ChatList = ({
   useEffect(() => {
     fetchChats(userId);
   }, [userId]);
-
 
   return (
     <div>

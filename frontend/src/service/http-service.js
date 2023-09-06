@@ -10,7 +10,7 @@ export const httpService = {
         .map((key) => key + "=" + params[key])
         .join("&");
 
-    const propperUrl = params ? `${url}/${queryParams}` : url;
+    const propperUrl = params ? `${url}?${queryParams}` : url;
     const response = await fetch(propperUrl);
 
     return await response.json();

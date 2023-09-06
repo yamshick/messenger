@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsersThunk, usersSlice } from "../store/reducers/users-slice";
-import { chatsSlice } from "../store/reducers/chat-slice";
+import { chatsSlice, fetchChatThunk } from "../store/reducers/chat-slice";
 
 export const UsersSearch = ({
+  userId,
   value: loginPredicate,
   onChange: onChangeProp,
 }) => {
@@ -53,19 +54,51 @@ export const UsersSearch = ({
     onChangeProp && onChangeProp(value);
   };
 
+  const setUpChat = async (chatMemberIds) => {
+    let activeChat = null;
+    try {
+      activeChat =
+        (await dispatch(
+          fetchChatThunk({
+            userIds: chatMemberIds,
+          })
+        )) || null;
+
+      // empty chat
+      if (!Object.entries(activeChat).length) {
+        activeChat = null;
+      }
+    } catch (e) {
+      console.error(e);
+      activeChat = null;
+    }
+
+    dispatch(
+      setActiveChat(
+        activeChat || {
+          // name: `Чат с ${user.firstName}`,
+          name: "CHAT",
+          memberIds: chatMemberIds,
+        }
+      )
+    );
+  };
+
   const onUserClick = (user) => {
-    dispatch(setActiveChat({
-        name: `Чат с ${user.firstName}`,
-        members: [user]
-    }))
-  }
+    const chatMemberIds = [userId, user.id];
+    setUpChat(chatMemberIds);
+  };
 
   return (
     <div>
       <input value={predicate} onChange={onChange} />
       <ul>
         {users &&
-          users.map((user, idx) => <li key={idx} onClick={() => onUserClick(user)}>{JSON.stringify(user)}</li>)}
+          users.map((user, idx) => (
+            <li key={idx} onClick={() => onUserClick(user)}>
+              <pre>{JSON.stringify(user, null, 2)}</pre>
+            </li>
+          ))}
       </ul>
     </div>
   );

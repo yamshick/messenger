@@ -14,7 +14,7 @@ export const Profile = () => {
   const { isAuth, userName, userId, login, role } = useSelector(
     (state) => state.authReducer
   );
-  const {activeChat} = useSelector(state => state.chatsReducer)
+  const { activeChat } = useSelector((state) => state.chatsReducer);
 
   const { setUser, setIsAuth } = authSlice.actions;
   const dispatch = useDispatch();
@@ -43,14 +43,19 @@ export const Profile = () => {
           >
             <div>
               <div>
-                <UsersSearch />
+                <UsersSearch userId={userId} />
               </div>
               <div>
                 <ChatList />
               </div>
             </div>
             <div>
-              <Messenger chat={activeChat} userName={userName} userId={userId} login={login}/>
+              <Messenger
+                chat={activeChat}
+                userName={userName}
+                userId={userId}
+                login={login}
+              />
               <Button onClick={onLogout}>Выйти</Button>
             </div>
           </div>

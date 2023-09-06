@@ -7,7 +7,7 @@ import { LOCAL_STORAGE_STATE_KEY } from "../local-storage";
 const rootReducer = combineReducers({
   authReducer,
   usersReducer,
-  chatsReducer
+  chatsReducer,
 });
 
 const localStorageMiddleware = (store) => (next) => (action) => {

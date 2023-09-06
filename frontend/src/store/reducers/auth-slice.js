@@ -70,12 +70,7 @@ export const authSlice = createSlice({
       state.isAuth = action.payload;
     },
     setUser(state, action) {
-      const {
-        id,
-        name,
-        login,
-        role
-      } = action.payload;
+      const { id, name, login, role } = action.payload;
       state.userId = id;
       state.userName = name;
       state.login = login;

@@ -20,7 +20,6 @@ export const Profile = () => {
     navigate(hashRoutes.LOGIN);
   };
 
-
   return (
     <>
       {isAuth ? (

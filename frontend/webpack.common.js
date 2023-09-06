@@ -1,5 +1,5 @@
-require('dotenv').config()
-const webpack = require('webpack')
+require("dotenv").config();
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
@@ -32,13 +32,12 @@ module.exports = {
   },
   plugins: [
     // new webpack.DefinePlugin({
-    //   'process.env.APP_HOST': 
+    //   'process.env.APP_HOST':
     //   ? JSON.stringify(process.env.APP_PROD_HOST)
     //   : JSON.stringify(process.env.APP_DEV_HOST)
     // }),
     new webpack.DefinePlugin({
-      'process.env.SOCKET_PORT': 
-      JSON.stringify(process.env.SOCKET_PORT)
+      "process.env.SOCKET_PORT": JSON.stringify(process.env.SOCKET_PORT),
     }),
     new HtmlWebpackPlugin({
       template: "./src/index.html",

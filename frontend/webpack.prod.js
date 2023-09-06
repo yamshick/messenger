@@ -1,5 +1,5 @@
-require('dotenv').config()
-const webpack = require('webpack')
+require("dotenv").config();
+const webpack = require("webpack");
 const path = require("path");
 const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
@@ -12,9 +12,7 @@ module.exports = merge(common, {
   mode: "production",
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.APP_HOST': 
-      JSON.stringify(process.env.APP_PROD_HOST)
+      "process.env.APP_HOST": JSON.stringify(process.env.APP_PROD_HOST),
     }),
   ],
-
 });

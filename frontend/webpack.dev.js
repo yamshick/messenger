@@ -1,5 +1,5 @@
-require('dotenv').config()
-const webpack = require('webpack')
+require("dotenv").config();
+const webpack = require("webpack");
 const { merge } = require("webpack-merge");
 const path = require("path");
 const common = require("./webpack.common.js");
@@ -21,8 +21,7 @@ module.exports = merge(common, {
   devtool: "inline-source-map",
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.APP_HOST': 
-      JSON.stringify(process.env.APP_DEV_HOST)
+      "process.env.APP_HOST": JSON.stringify(process.env.APP_DEV_HOST),
     }),
   ],
 });

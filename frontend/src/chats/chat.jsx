@@ -12,25 +12,24 @@ import { MessageList } from "./message-list";
 const PULLING_INTERVAL = 10 * 1000;
 
 // const host = '127.0.0.1'
-const host = process.env.APP_HOST
-const port = process.env.SOCKET_PORT
-console.log({host, port})
+const host = process.env.APP_HOST;
+const port = process.env.SOCKET_PORT;
+console.log({ host, port });
 
-const initSocket = ({host, port}) => {
+const initSocket = ({ host, port }) => {
   const ws = new WebSocket(`wss://${host}:${port}`);
   ws.onmessage = (message) => {
-      const messages = JSON.parse(message.data);
-      console.log({messages})
-  }
+    const messages = JSON.parse(message.data);
+    console.log({ messages });
+  };
   const send = (data) => {
-      console.log('sending', {data})
-      ws.send(JSON.stringify(data))
-      return false;
-  }
+    console.log("sending", { data });
+    ws.send(JSON.stringify(data));
+    return false;
+  };
 
-  return {send}
-}
-
+  return { send };
+};
 
 export const Chat = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +38,7 @@ export const Chat = () => {
   const dispatch = useDispatch();
   const { userId, userName, login } = useSelector((state) => state.authReducer);
 
-  const [wsInterface, setWsInterface] = useState({})
+  const [wsInterface, setWsInterface] = useState({});
 
   const fetchMessagesUpdate = async () => {
     try {
@@ -51,9 +50,9 @@ export const Chat = () => {
   };
 
   useEffect(() => {
-    const {send} = initSocket({host, port})
-    setWsInterface({send})
-  }, [])
+    const { send } = initSocket({ host, port });
+    setWsInterface({ send });
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -84,11 +83,11 @@ export const Chat = () => {
     //   return;
     // }
 
-    wsInterface.send && wsInterface.send({message: 'hello'})
+    wsInterface.send && wsInterface.send({ message: "hello" });
     // console.log({send})
     // send({message})
 
-    return 
+    return;
     const newMessage = {
       userIds: [1, 2],
       userId,
@@ -114,7 +113,12 @@ export const Chat = () => {
         <div>
           {/* <pre>{JSON.stringify(messages || {}, null, 2)}</pre> */}
           <MessageList chat={chat} />
-          <Input value={message} onChange={setMessage} onEnter={sendMessage} type={"text"} />
+          <Input
+            value={message}
+            onChange={setMessage}
+            onEnter={sendMessage}
+            type={"text"}
+          />
           <Button onClick={sendMessage}>Отправить</Button>
         </div>
       )}

@@ -8,14 +8,14 @@ import { Router } from "react-router-dom";
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
-const store = setupStore();
+// const store = setupStore();
 
 root.render(
   // <Router>
-  <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>
+  // <Provider store={store}>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+  // </Provider>
   // </Router>
 );

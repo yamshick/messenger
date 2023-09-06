@@ -11,7 +11,7 @@ import { UsersSearch } from "../users-search/users-search";
 import { ChatList } from "../chat-list/chat-list";
 
 export const Profile = () => {
-  const { isAuth, userName, userId, login } = useSelector(
+  const { isAuth, userName, userId, login, role } = useSelector(
     (state) => state.authReducer
   );
   const { setUser, setIsAuth } = authSlice.actions;
@@ -28,6 +28,7 @@ export const Profile = () => {
       {isAuth || true ? (
         <div className={styles.formContainer}>
           <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
+          <div className={styles.textMessage}>{`ROLE: ${role}!`}</div>
           {/* <Chat /> */}
           <div
             style={{

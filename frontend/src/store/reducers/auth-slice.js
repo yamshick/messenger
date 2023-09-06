@@ -13,6 +13,7 @@ const initialState = {
   userName: null,
   userId: null,
   login: null,
+  role: null,
   chats: [],
 };
 
@@ -73,10 +74,12 @@ export const authSlice = createSlice({
         id,
         name,
         login,
+        role
       } = action.payload;
       state.userId = id;
       state.userName = name;
       state.login = login;
+      state.role = role;
     },
     setChats(state, action) {
       state.chats = action.payload;

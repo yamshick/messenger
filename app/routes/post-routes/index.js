@@ -1,3 +1,5 @@
+const { userRoles } = require("../../constants");
+
 async function db_all(db, query, params) {
   return new Promise(function (resolve, reject) {
     db.all(query, params, function (err, rows) {
@@ -59,6 +61,18 @@ module.exports = function (app, db) {
     //        processProducts(req, res, db);
     //     else
   });
+
+  // app.post("/api/chat/add", (req, res) => {
+  //   res.setHeader("Access-Control-Allow-Origin", "*");
+
+  //   const data = req.body;
+  //   console.log({ data });
+  //   // processUser(req, res, db);
+
+  //   //     if((data.constructor === Array))
+  //   //        processProducts(req, res, db);
+  //   //     else
+  // });
 };
 
 function processProducts(req, res, db) {
@@ -164,6 +178,7 @@ async function loginUser(data, res, db) {
           id: user.id,
           name: user.first_name,
           login: user.login,
+          role: user.role,
         },
         message: "Logged in successfully",
       })
@@ -174,11 +189,11 @@ async function loginUser(data, res, db) {
 function insertUser(user, res, db) {
   const { firstName, secondName, login, password } = user;
 
-  const insertUserSql = `insert into Users (first_name, second_name, login, password) 
+  const insertUserSql = `insert into Users (first_name, second_name, login, password, role) 
             VALUES 
-            (?, ?, ?, ?);`;
+            (?, ?, ?, ?, ?);`;
 
-  const values = [firstName, secondName || "", login, password];
+  const values = [firstName, secondName || "", login, password, userRoles.USER];
 
   db.serialize(function () {
     db.run(insertUserSql, values, function (err) {

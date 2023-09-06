@@ -27,7 +27,7 @@ export const Profile = () => {
         <div className={styles.formContainer}>
           <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
           {/* <Chat /> */}
-          <Messenger />
+          <Messenger userName={userName}/>
           <Button onClick={onLogout}>Выйти</Button>
         </div>
       ) : (

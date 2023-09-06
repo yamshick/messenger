@@ -8,7 +8,7 @@ const socket = io();
 
 const messageTone = new Audio(messageToneRaw);
 
-export const Messenger = () => {
+export const Messenger = ({userName}) => {
   const [clientsCount, setClientsCount] = useState(1);
   const [nameInput, setNameInput] = useState("anonymous");
   const [messageInput, setMessageInput] = useState("");
@@ -91,9 +91,9 @@ export const Messenger = () => {
             type="text"
             id="name-input"
             className="name-input"
-            value={nameInput}
+            value={userName}
             maxLength="20"
-            onChange={onNameChange}
+            // onChange={onNameChange}
           />
         </div>
 

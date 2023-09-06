@@ -1,5 +1,5 @@
 module.exports = function (app, db) {
-  app.get("/api/chats/user/:userId", (req, res) => {
+  app.get("/api/chats/user/:login", (req, res) => {
     processData(res, "SELECT * FROM Chats");
     // processData(res, "SELECT * FROM Chats where id == "+req.params.userId);
   });

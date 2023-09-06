@@ -145,26 +145,28 @@ async function loginUser(data, res, db) {
 
   const sql = `select * from Users where login = ?`;
   const users = await db_all(db, sql, [login]);
-  const user = users?.[0] || null
+  const user = users?.[0] || null;
 
   console.log("__found on login", { users });
   if (!user) {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.status(403).json({error: 'User with such login doesnot exist'})
-    return res.send()
+    res.status(403).json({ error: "User with such login doesnot exist" });
+    return res.send();
   } else if (user.login === login && user.password !== password) {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.status(403).json({error: 'Wrong password'})
-    return res.send()
+    res.status(403).json({ error: "Wrong password" });
+    return res.send();
   } else if (user.login === login && user.password === password) {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.json({
-      user: {
-        name: user.first_name,
-        login: user.login,  
-      },
-      message: 'Logged in successfully'
-    }).send()
+    return res
+      .json({
+        user: {
+          name: user.first_name,
+          login: user.login,
+        },
+        message: "Logged in successfully",
+      })
+      .send();
   }
 }
 

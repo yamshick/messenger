@@ -15,7 +15,7 @@ module.exports = merge(common, {
     static: path.join(__dirname, "src"),
     historyApiFallback: true,
     proxy: {
-      "/": "http://localhost:8081/",
+      "/": "http://localhost:4000/",
     },
   },
   devtool: "inline-source-map",

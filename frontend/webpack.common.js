@@ -24,6 +24,11 @@ module.exports = {
           { loader: "css-loader", options: { modules: true } },
         ],
       },
+      {
+        test: /\.mp3$/,
+        // include: SRC,
+        loader: 'file-loader'
+    }
     ],
   },
   resolve: {

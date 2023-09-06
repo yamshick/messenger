@@ -12,22 +12,26 @@ import { useState } from "react";
 import "./styles/style.css";
 import { io } from "socket.io-client";
 import moment from "moment";
+import messageToneRaw from '../assets/message-tone.mp3'
 // console.log(stules)
 
 const socket = io();
 
-socket.on("clients-total", (data) => {
-  clientsTotal.innerText = `Total Clients: ${data}`;
-});
-
-const messageTone = new Audio("assets/message-tone.mp3");
+const messageTone = new Audio(messageToneRaw);
+console.log({messageTone})
 
 export const App = () => {
+  const [clientsCount, setClientsCount] = useState(1);
   const [nameInput, setNameInput] = useState("anonymous");
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [feedback, setFeedback] = useState([]);
 
+  socket.on("clients-total", (data) => {
+    console.log('clients-total', {data})
+    setClientsCount(data)
+  });
+  
   const onNameChange = (event) => {
     // console.log({event})
     setNameInput(event.target.value);
@@ -66,8 +70,9 @@ export const App = () => {
   };
 
   socket.on("chat-message", (data) => {
-    // console.log(data)
+    console.log(data)
     messageTone.play();
+    // setMessages([...messages, { ownMessage:, data }]);
     addMessageToUI(false, data);
   });
 
@@ -111,7 +116,7 @@ export const App = () => {
               <p className="message">
                 ${data.message}
                 <span>
-                  ${data.name} ● ${moment(data.dateTime).fromNow()}
+                  {data.name} ● {moment(data.dateTime).fromNow()}
                 </span>
               </p>
             </li>
@@ -137,7 +142,7 @@ export const App = () => {
         </div>
       </div>
       <h3 className="clients-total" id="client-total">
-        Total clients: 2
+        Total clients: {clientsCount}
       </h3>
     </>
   );

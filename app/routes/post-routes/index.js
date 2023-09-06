@@ -1,3 +1,12 @@
+async function db_all(db, query, params){
+    return new Promise(function(resolve,reject){
+        db.all(query, params, function(err,rows){
+           if(err){return reject(err);}
+           resolve(rows);
+         });
+    });
+}
+
 module.exports = function (app, db) {
     
     // Add new product
@@ -15,7 +24,7 @@ module.exports = function (app, db) {
     //     {...},{...}
     // ]
     app.post('/api/register/', (req, res) => {
-        res.setHeader("Access-Control-Allow-Origin", "*");
+        // res.setHeader("Access-Control-Allow-Origin", "*");
 
          const data = req.body;
          console.log('register', {data})
@@ -47,6 +56,7 @@ function processProducts(req, res, db){
 
 function processUser(req, res, db){
     validateRequest(req, res);
+    validateRegistration(req.body, res, db);
     insertUser(req.body, res, db);
 }
 
@@ -79,37 +89,42 @@ function insertChat(chat, res, db){
     });
 }
 
-function insertUser(user, res, db){
+async function validateRegistration(user, res, db) {
 	const {firstName, secondName, login, password} = user
 
-    // TODO
-    const validateUserSql = `select * from Users where login = ?`;
-    db.all(validateUserSql, [login], (err, rows) => {
-        if (err){
-            console.error(err);
-            res.status(500).send(err);
+        // let userExists = false;
+        // TODO
+        const validateUserSql = `select * from Users where login = ?`;
+        // const result = await db.query(validateUserSql, [login]);
+        const result = await db_all(db, validateUserSql, [login])
+        // const rows = await db.all(validateUserSql, [login], (err, rows) => {
+        //     if (err){
+        //         console.error(err);
+        //         return res.status(500).send(err);
+        //         return;
+        //     }
+    
+        //     // rows.forEach((row) => {
+        //     //   console.log('__found: ', {row});
+        //     // });
+    
+        //     // if (rows.length) {
+        //     //     userExists = true;
+        //     // }
+        //   }); 
+          
+          console.log('__found', {result})
+          if (result.length) {
+            // userExists = false;
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            // res.status(409).json({error: 'User with such login exists'})
+            
+            return res.status(409).send(JSON.stringify({error: 'User with such login exists'}));
+          }
         }
 
-        // rows.forEach((row) => {
-        //   console.log('__found: ', {row});
-        // });
-
-        if (rows.length) {
-            res.status(409).send(JSON.stringify({error: 'User with such login exists'}));
-        }
-      });
-
-    db.serialize(function () {
-        db.run(validateUserSql, function (err) {
-            if (err){
-                console.error(err);
-                res.status(500).send(err);
-            }
-                
-            else
-                res.send();
-        });
-    });
+function insertUser(user, res, db){
+	const {firstName, secondName, login, password} = user
 
     const insertUserSql = `insert into Users (first_name, second_name, login, password) 
             VALUES 
@@ -121,11 +136,15 @@ function insertUser(user, res, db){
         db.run(insertUserSql, values, function (err) {
             if (err){
                 console.error(err);
-                res.status(500).send(err);
+        res.setHeader("Access-Control-Allow-Origin", "*");
+            return res.status(500).send(err);
+                
             }
                 
-            else
-                res.send();
+            else {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        return res.send(JSON.stringify({message: "User successfully registered"}));
+            }
         });
     });
 }

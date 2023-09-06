@@ -36,7 +36,7 @@ export const Registration = () => {
         registerThunk({ firstName: name, secondName: '', login, password })
       ).unwrap();
       if (res.error) {
-        // console.log(res.error)
+        console.log(res.error)
         setErrorMessage(res.error);
         throw new Error(res.error);
       }

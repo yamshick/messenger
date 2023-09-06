@@ -4,11 +4,13 @@ export const httpService = {
     return await response.json();
   },
   get: async (url, params) => {
-    const queryParams = params && Object.keys(params)
-      .map((key) => key + "=" + params[key])
-      .join("&");
+    const queryParams =
+      params &&
+      Object.keys(params)
+        .map((key) => key + "=" + params[key])
+        .join("&");
 
-      const propperUrl = params ? `${url}/${queryParams}` : url;
+    const propperUrl = params ? `${url}/${queryParams}` : url;
     const response = await fetch(propperUrl);
 
     return await response.json();

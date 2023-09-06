@@ -1,11 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-    FETCH_USERS
-} from "../../api/constants";
+import { FETCH_USERS } from "../../api/constants";
 import { httpService } from "../../service/http-service";
 
 const initialState = {
-    users: []
+  users: [],
 };
 
 export const fetchUsersThunk = createAsyncThunk(
@@ -16,13 +14,12 @@ export const fetchUsersThunk = createAsyncThunk(
   }
 );
 
-
 export const usersSlice = createSlice({
   name: "users",
   initialState: initialState,
   reducers: {
     setUsers(state, action) {
-        console.warn({action})
+      console.warn({ action });
       state.users = action.payload;
     },
   },

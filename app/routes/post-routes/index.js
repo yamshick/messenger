@@ -161,6 +161,7 @@ async function loginUser(data, res, db) {
     return res
       .json({
         user: {
+          id: user.id,
           name: user.first_name,
           login: user.login,
         },

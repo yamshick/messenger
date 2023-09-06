@@ -70,11 +70,11 @@ export const authSlice = createSlice({
     },
     setUser(state, action) {
       const {
-        // id,
+        id,
         name,
         login,
       } = action.payload;
-      // state.userId = id;
+      state.userId = id;
       state.userName = name;
       state.login = login;
     },

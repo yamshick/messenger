@@ -1,8 +1,7 @@
 module.exports = function (app, db) {
-
   app.get("/api/users/:loginPredicate", (req, res) => {
     const predicate = req.params.loginPredicate;
-    console.log({predicate})
+    console.log({ predicate });
     if (!predicate) {
       return res.json([]);
     }
@@ -11,8 +10,14 @@ module.exports = function (app, db) {
     // processData(res, "SELECT * FROM Chats where id == "+req.params.userId);
   });
 
-  app.get("/api/chats/user/:login", (req, res) => {
-    processData(res, "SELECT * FROM Chats");
+  app.get("/api/chats/:userId", (req, res) => {
+    const userId = req.params.userId
+    processData(res, `
+      SELECT * FROM Chats 
+      WHERE 
+        USERS LIKE '%,${userId}%' OR
+        USERS LIKE '${userId},%'
+      `);
     // processData(res, "SELECT * FROM Chats where id == "+req.params.userId);
   });
 
@@ -85,7 +90,7 @@ module.exports = function (app, db) {
   function sendData(res, data, err) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    console.log({data})
+    console.log({ data });
     if (data) res.send(data);
     else {
       res.status(404).send("Chat not found");

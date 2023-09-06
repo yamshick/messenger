@@ -28,6 +28,7 @@ export const Login = () => {
         throw new Error(res.error?.message);
       }
       const { user } = res;
+      console.warn({user})
       setLogin("");
       setPassword("");
       dispatch(setIsAuth(true));

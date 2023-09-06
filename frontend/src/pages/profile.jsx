@@ -8,6 +8,7 @@ import styles from "./page.css";
 // import { Chat } from "../chats/chat";
 import { Messenger } from "../messenger/messenger";
 import { UsersSearch } from "../users-search/users-search";
+import { ChatList } from "../chat-list/chat-list";
 
 export const Profile = () => {
   const { isAuth, userName, userId, login } = useSelector(
@@ -28,17 +29,24 @@ export const Profile = () => {
         <div className={styles.formContainer}>
           <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
           {/* <Chat /> */}
-          <div style={{display: 'flex', flexDirection: 'space-between', border: 'solid 1px', width: '100%'}}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "space-between",
+              border: "solid 1px",
+              width: "100%",
+            }}
+          >
             <div>
-            <div>
-             <UsersSearch />
+              <div>
+                <UsersSearch />
+              </div>
+              <div>
+                <ChatList />
+              </div>
             </div>
             <div>
-              USERS LIST
-            </div>
-            </div>
-            <div>
-              <Messenger userName={userName}/>
+              <Messenger userName={userName} />
               <Button onClick={onLogout}>Выйти</Button>
             </div>
           </div>

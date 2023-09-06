@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "styles/style.style";
 import { io } from "socket.io-client";
 import moment from "moment";
@@ -8,9 +8,11 @@ const socket = io();
 
 const messageTone = new Audio(messageToneRaw);
 
-export const Messenger = ({userName}) => {
+export const Messenger = ({ userName }) => {
   const [clientsCount, setClientsCount] = useState(1);
-  const [nameInput, setNameInput] = useState("anonymous");
+  const [nameInput, setNameInput] = useState(userName);
+  // TODO
+  useEffect(() => {setNameInput(userName)}, [userName])
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [feedback, setFeedback] = useState([]);

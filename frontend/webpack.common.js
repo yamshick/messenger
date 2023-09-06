@@ -36,7 +36,7 @@ module.exports = {
     ],
   },
   resolve: {
-    modules: ["src", "node_modules"],
+    modules: ["frontend", "src", "node_modules"],
     extensions: [".js", ".jsx"],
   },
   plugins: [

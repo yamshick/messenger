@@ -9,28 +9,6 @@ import { Input } from "ui/input";
 import { Button } from "ui/button";
 import { MessageList } from "./message-list";
 
-const PULLING_INTERVAL = 10 * 1000;
-
-// const host = '127.0.0.1'
-const host = process.env.APP_HOST;
-const port = process.env.SOCKET_PORT;
-console.log({ host, port });
-
-const initSocket = ({ host, port }) => {
-  const ws = new WebSocket(`wss://${host}:${port}`);
-  ws.onmessage = (message) => {
-    const messages = JSON.parse(message.data);
-    console.log({ messages });
-  };
-  const send = (data) => {
-    console.log("sending", { data });
-    ws.send(JSON.stringify(data));
-    return false;
-  };
-
-  return { send };
-};
-
 export const Chat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");

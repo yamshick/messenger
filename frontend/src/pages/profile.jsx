@@ -5,7 +5,8 @@ import { hashRoutes } from "../constants";
 import { Button } from "../ui/button";
 import { authSlice } from "../store/reducers/auth-slice";
 import styles from "./page.css";
-import { Chat } from "../chats/chat";
+// import { Chat } from "../chats/chat";
+import { Messenger } from "../messenger/messenger";
 
 export const Profile = () => {
   const { isAuth, userName, userId, login } = useSelector(
@@ -22,10 +23,11 @@ export const Profile = () => {
 
   return (
     <>
-      {isAuth ? (
+      {isAuth  || true ? (
         <div className={styles.formContainer}>
           <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
-          <Chat />
+          {/* <Chat /> */}
+          <Messenger />
           <Button onClick={onLogout}>Выйти</Button>
         </div>
       ) : (

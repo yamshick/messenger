@@ -10,7 +10,7 @@
 // import styles from "./styles/style.css";
 import { useState } from "react";
 import "./styles/style.css";
-// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 import moment from "moment";
 import messageToneRaw from '../assets/message-tone.mp3'
 // console.log(stules)

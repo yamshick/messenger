@@ -4,6 +4,8 @@ import { io } from "socket.io-client";
 import moment from "moment";
 import messageToneRaw from "assets/message-tone.mp3";
 
+moment.locale('ru')
+
 const socket = io();
 
 const messageTone = new Audio(messageToneRaw);
@@ -123,8 +125,11 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   };
 
   return (
-    <>
-      <h1 className="title">{chat.name} 💬</h1>
+    <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+      <h1 className="title">{
+      chat.name
+      // "Чат"
+      } 💬</h1>
       <div className="main">
         {/* <div className="name">
           <span>
@@ -173,7 +178,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
           />
           <div className="v-divider"></div>
           <button className="send-button" onClick={sendMessage}>
-            send{" "}
+            Отправить{" "}
             <span>
               <i className="fas fa-paper-plane"></i>
             </span>
@@ -183,6 +188,6 @@ export const Messenger = ({ userName, userId, login, chat }) => {
       {/* <h3 className="clients-total" id="client-total">
         Total clients: {clientsCount}
       </h3> */}
-    </>
+    </div>
   );
 };

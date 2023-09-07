@@ -9,7 +9,7 @@ export const ChatList = (
     //   onChange: onChangeProp,
   }
 ) => {
-  const { setChats } = chatsSlice.actions;
+  const { setChats, setActiveChat } = chatsSlice.actions;
 
   const { userId } = useSelector((state) => state.authReducer);
   const { chats } = useSelector((state) => state.chatsReducer);
@@ -39,11 +39,17 @@ export const ChatList = (
     fetchChats(userId);
   }, [userId]);
 
+  const onChatClick = (chat) => dispatch(setActiveChat(chat));
+
   return (
     <div>
       <ul>
         {chats &&
-          chats.map((chat, idx) => <li key={idx}>{JSON.stringify(chat)}</li>)}
+          chats.map((chat, idx) => (
+            <li key={idx} onClick={() => onChatClick(chat)}>
+              <pre>{JSON.stringify(chat, null, 2)}</pre>
+            </li>
+          ))}
       </ul>
     </div>
   );

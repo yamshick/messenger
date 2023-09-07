@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FETCH_CHATS, FETCH_USERS, FETCH_CHAT, POST_CHAT } from "../../api/constants";
+import {
+  FETCH_CHATS,
+  FETCH_USERS,
+  FETCH_CHAT,
+  POST_CHAT,
+} from "../../api/constants";
 import { httpService } from "../../service/http-service";
 
 const initialState = {

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsersThunk, usersSlice } from "../store/reducers/users-slice";
-import { chatsSlice, fetchChatThunk, postChatThunk } from "../store/reducers/chat-slice";
+import {
+  chatsSlice,
+  fetchChatThunk,
+  postChatThunk,
+} from "../store/reducers/chat-slice";
 
 export const UsersSearch = ({
   userId,
@@ -57,26 +61,25 @@ export const UsersSearch = ({
   const setUpChat = async (chatMemberIds) => {
     let activeChat = null;
     try {
-      activeChat =
-        await dispatch(
-          fetchChatThunk({
-            userIds: chatMemberIds,
-          })
-        ).unwrap();
+      activeChat = await dispatch(
+        fetchChatThunk({
+          userIds: chatMemberIds,
+        })
+      ).unwrap();
 
       activeChat = activeChat ? activeChat[0] : activeChat;
 
       // console.warn({activeChat})
       // empty chat
       if (!Object.entries(activeChat).length) {
-        activeChat = (await dispatch(
-          postChatThunk({
-            name: `Чат между ${chatMemberIds}`,
-            userIds: chatMemberIds,
-          })
-        ).unwrap()[0]) || null;
+        activeChat =
+          (await dispatch(
+            postChatThunk({
+              name: `Чат между ${chatMemberIds}`,
+              userIds: chatMemberIds,
+            })
+          ).unwrap()[0]) || null;
       }
-
     } catch (e) {
       console.error(e);
       activeChat = null;
@@ -107,6 +110,7 @@ export const UsersSearch = ({
           users.map((user, idx) => (
             <li key={idx} onClick={() => onUserClick(user)}>
               <pre>{JSON.stringify(user, null, 2)}</pre>
+              <p>----------------------------</p>
             </li>
           ))}
       </ul>

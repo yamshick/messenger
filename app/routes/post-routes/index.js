@@ -96,10 +96,10 @@ function processChat(req, res, db) {
 function insertChat(req, res, db) {
   const { name, userIds: rawUsers } = req.body;
   console.log({
-    name, 
-    rawUsers, 
+    name,
+    rawUsers,
     // chat
-  })
+  });
   const users = rawUsers.join(",");
   const messages = "[]";
 
@@ -113,7 +113,7 @@ function insertChat(req, res, db) {
   where name == '${name}' and
   users == '${users}' and 
   messages == '${messages}'
-  `
+  `;
   // does not retrieve any data
   db.serialize(function () {
     db.run(sql, values, function (err) {
@@ -135,7 +135,7 @@ function insertChat(req, res, db) {
       if (err) {
         console.error(err);
         res.status(500).send(err);
-      } else { 
+      } else {
         // const oneRow = rows.length ? rows[0] : JSON.stringify({data: null})
         sendData(res, rows, err);
       }

@@ -1,4 +1,19 @@
 module.exports = function (app, db) {
+  app.get("/api/roles", (req, res) => {
+    const sql = `SELECT * FROM Roles`;
+    processData(res, sql);
+  });
+
+  app.get("/api/users", (req, res) => {
+    const sql = `SELECT * FROM Users`;
+    processData(res, sql);
+  });
+
+  app.get("/api/chats", (req, res) => {
+    const sql = `SELECT * FROM Chats`;
+    processData(res, sql);
+  });
+
   app.get("/api/users/:loginPredicate", (req, res) => {
     const predicate = req.params.loginPredicate;
     console.log("login predicate", { predicate });

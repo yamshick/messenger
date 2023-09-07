@@ -10,6 +10,7 @@ import styles from "./page.css";
 import { Messenger } from "../messenger/messenger";
 import { UsersSearch } from "../users-search/users-search";
 import { ChatList } from "../chat-list/chat-list";
+import { Admin } from "./admin";
 
 export const Profile = () => {
   const { isAuth, userName, userId, login, role } = useSelector(
@@ -27,7 +28,14 @@ export const Profile = () => {
     navigate(hashRoutes.LOGIN);
   };
 
-  console.log({ isAuth });
+  if (role === "admin") {
+    return (
+      <>
+      <Button onClick={onLogout}>Выйти</Button>
+    <Admin /></>)
+    ;
+  }
+
   return (
     <>
       {isAuth ? (

@@ -3,7 +3,9 @@ const fs = require("fs");
 const schemasFileNames = [
   "app/db/chat-schema.sql",
   "app/db/users-schema.sql",
+  "app/db/roles-schema.sql",
   "app/db/init-admin-user-schema.sql",
+  "app/db/init-roles-schema.sql",
 ];
 
 const schemas = (() => {
@@ -23,9 +25,14 @@ const schemas = (() => {
 module.exports = function (db) {
   try {
     for (let schema of schemas) {
-      db.serialize(function () {
-        db.run(schema);
-      });
+      try {
+        db.serialize(function () {
+          db.run(schema);
+        });
+      } catch (e) {
+        // console.error('error: ', schema)
+        throw new Error(schema);
+      }
     }
   } catch (e) {
     console.error(e);

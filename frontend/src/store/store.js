@@ -2,12 +2,15 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { reducer as authReducer } from "./reducers/auth-slice";
 import { reducer as usersReducer } from "./reducers/users-slice";
 import { reducer as chatsReducer } from "./reducers/chat-slice";
+import { reducer as adminReducer } from "./reducers/admin-slice";
+
 import { LOCAL_STORAGE_STATE_KEY } from "../local-storage";
 
 const rootReducer = combineReducers({
   authReducer,
   usersReducer,
   chatsReducer,
+  adminReducer,
 });
 
 const localStorageMiddleware = (store) => (next) => (action) => {

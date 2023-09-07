@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { hashRoutes } from "../constants";
 import { Button } from "../ui/button";
 import { authSlice } from "../store/reducers/auth-slice";
+import "styles/style.style";
 import styles from "./page.css";
 // import { Chat } from "../chats/chat";
 import { Messenger } from "../messenger/messenger";
@@ -31,7 +32,38 @@ export const Profile = () => {
     <>
       {isAuth ? (
         <div className={styles.formContainer}>
-          <Button onClick={onLogout}>Выйти</Button>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <div
+              className="name"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              <span>
+                <i className="far fa-user"></i>
+              </span>
+              <span style={{ color: "black" }}>{userName}</span>
+              {/* <input
+              type="text"
+              id="name-input"
+              className="name-input"
+              value={userName}
+            /> */}
+            </div>
+
+            <Button onClick={onLogout}>Выйти</Button>
+          </div>
+
           {/* <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
           <div className={styles.textMessage}>{`ROLE: ${role}!`}</div> */}
           {/* <Chat /> */}

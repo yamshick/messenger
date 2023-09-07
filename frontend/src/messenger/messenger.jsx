@@ -39,14 +39,16 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   };
 
   const scrollToBottom = (smooth) => {
-    messageContainerDummyDivRef.current.scrollIntoView()
+    messageContainerDummyDivRef.current.scrollIntoView();
     // messageContainerDummyDivRef.current.scrollIntoView(smooth ? { behavior: "smooth" } : {});
     // scrollTo(0, 200000)
     // messageContainer.scrollTo(0, messageContainer.scrollHeight)
   };
 
   // ONLY THIS TRULLY WORKS
-  useEffect(() => {scrollToBottom()}, [messages])
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
   // messageInput.addEventListener('focus', (e) => {
   //   socket.emit('feedback', {
   //     feedback: `✍️ ${nameInput.value} is typing a message`,
@@ -74,12 +76,11 @@ export const Messenger = ({ userName, userId, login, chat }) => {
       chat,
     });
 
-    console.warn(chat);
     const parsedChatMessages = JSON.parse(chat.messages);
     const chatMessages = Array.isArray(parsedChatMessages)
       ? parsedChatMessages
       : [];
-    // console.warn({ chatMessages });
+
     setMessages(
       chatMessages.map(({ data }) => ({
         ownMessage: data.userId === userId,
@@ -87,18 +88,18 @@ export const Messenger = ({ userName, userId, login, chat }) => {
       }))
     );
 
-    scrollToBottom(true)
+    scrollToBottom(true);
   }, [chat]);
 
   // console.log({ messages });
 
   socket.on("clients-total", (data) => {
-    console.log("clients-total", { data });
+    // console.log("clients-total", { data });
     setClientsCount(data);
   });
 
   socket.on("chat-message", (data) => {
-    console.log({ data });
+    // console.log({ data });
     messageTone.play();
     // setMessages([...messages, { ownMessage:, data }]);
     addMessageToUI(false, data);
@@ -118,14 +119,14 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     socket.emit("message", data);
     addMessageToUI(true, data);
     setMessageInput("");
-    scrollToBottom(true)
+    scrollToBottom(true);
   };
 
   return (
     <>
       <h1 className="title">{chat.name} 💬</h1>
       <div className="main">
-        <div className="name">
+        {/* <div className="name">
           <span>
             <i className="far fa-user"></i>
           </span>
@@ -137,7 +138,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
             maxLength="20"
             // onChange={onNameChange}
           />
-        </div>
+        </div> */}
 
         <ul
           className="message-container"
@@ -179,9 +180,9 @@ export const Messenger = ({ userName, userId, login, chat }) => {
           </button>
         </div>
       </div>
-      <h3 className="clients-total" id="client-total">
+      {/* <h3 className="clients-total" id="client-total">
         Total clients: {clientsCount}
-      </h3>
+      </h3> */}
     </>
   );
 };

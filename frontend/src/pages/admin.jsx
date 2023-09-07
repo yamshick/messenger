@@ -48,11 +48,50 @@ export const Admin = () => {
     fetchChats();
   }, []);
 
+  const onUserRemove = (user) => {
+    console.warn({user})
+  }
+
+  const onRoleSelect = (event) => {
+    const {value} = event.target; 
+    console.warn('on role select', {event, value})
+  }
+
   return (
-    <div>
-      <pre>{JSON.stringify(roles, null, 2)}</pre>
-      <pre>{JSON.stringify(users, null, 2)}</pre>
-      <pre>{JSON.stringify(chats, null, 2)}</pre>
+    <div style={{display:'flex', justifyContent: 'space-between', gap: 3}}>
+        {/* <div>
+            <h3>Роли</h3>
+        <pre>{JSON.stringify(roles, null, 2)}</pre>
+        </div>
+  */}
+        <div>
+        <h3>Пользователи</h3>
+        <ul>
+            {users.map(user => (
+                <li key={user.id}>
+                    <div style={{display:'flex', justifyContent: 'space-between', gap: 3}}>
+                    <p>
+                    {`name: ${user.firstName} ${user.secondName}, login: ${user.login}`}
+                    </p>
+                    <button onClick={() => onUserRemove(user)}>Удалить</button>
+                    <select onChange={onRoleSelect}>
+                        {roles.map(role => (
+                        <option key={role.id} value={role}>
+                            {role.name}
+                        </option>
+                        
+                        ))}
+                    </select>
+                    </div>
+                </li>
+            ))}
+        </ul>
+        <pre>{JSON.stringify(users, null, 2)}</pre>
+        </div>
+        <div>
+        <h3>Чаты</h3>
+        <pre>{JSON.stringify(chats, null, 2)}</pre>
+        </div>
     </div>
   );
 };

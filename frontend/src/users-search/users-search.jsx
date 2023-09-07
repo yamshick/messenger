@@ -14,12 +14,11 @@ export const UsersSearch = ({
 }) => {
   const [predicate, setPredicate] = useState(loginPredicate || "");
   const { users } = useSelector(
-    (state) => console.log({ state }) || state.usersReducer
+    (state) => state.usersReducer
   );
   const { setUsers } = usersSlice.actions;
   const { setActiveChat } = chatsSlice.actions;
 
-  console.log({ users });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -67,18 +66,24 @@ export const UsersSearch = ({
         })
       ).unwrap();
 
+      // console.warn({activeChat})
       activeChat = activeChat ? activeChat[0] : activeChat;
 
-      console.warn({ activeChat });
       // empty chat
       if (!activeChat) {
         activeChat =
-          (await dispatch(
+          await dispatch(
             postChatThunk({
+              // name: `Чат между ${chatMemberIds}`,
               name: `Чат между ${chatMemberIds}`,
               userIds: chatMemberIds,
             })
-          ).unwrap()[0]) || null;
+          ).unwrap();
+
+        activeChat = activeChat ? activeChat[0] : activeChat;
+
+        // console.warn({ activeChat });
+
       }
     } catch (e) {
       console.error(e);
@@ -109,8 +114,7 @@ export const UsersSearch = ({
         {users &&
           users.map((user, idx) => (
             <li key={idx} onClick={() => onUserClick(user)}>
-              <pre>{JSON.stringify(user, null, 2)}</pre>
-              <p>----------------------------</p>
+              <p>{`id: ${user.id}, name: ${user.firstName}`}</p>
             </li>
           ))}
       </ul>

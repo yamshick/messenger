@@ -47,7 +47,7 @@ export const Login = () => {
     return <Navigate to={hashRoutes.PROFILE} />;
   }
   return (
-    <div className={styles.formContainer}>
+    <div className={styles.formContainer} style={{height: '60vh'}}>
       {isLoading ? (
         <Spinner />
       ) : (

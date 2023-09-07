@@ -59,6 +59,16 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     scrollToBottom();
   };
 
+  useEffect(() => {
+    socket.emit("create-room", {
+      name: nameInput,
+      userId,
+      login,
+      chat,
+    });
+
+    setMessages([])
+  }, [chat])
   console.log({ messages });
 
   socket.on("clients-total", (data) => {

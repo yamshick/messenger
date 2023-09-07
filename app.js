@@ -14,7 +14,7 @@ const io = require("socket.io")(server);
 const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database("app/db/sqlite.db");
 
-require("./app/routes")(app, db);
+require("./app/routes")(app, db, io);
 
 app.use(express.static(path.join(__dirname, "frontend/dist")));
 
@@ -33,25 +33,25 @@ app.use(express.urlencoded());
 
 let socketsConected = new Set();
 
-io.on("connection", onConnected);
+// io.on("connection", onConnected);
 
-function onConnected(socket) {
-  console.log("Socket connected", socket.id);
-  socketsConected.add(socket.id);
-  io.emit("clients-total", socketsConected.size);
+// function onConnected(socket) {
+//   console.log("Socket connected", socket.id);
+//   socketsConected.add(socket.id);
+//   io.emit("clients-total", socketsConected.size);
 
-  socket.on("disconnect", () => {
-    console.log("Socket disconnected", socket.id);
-    socketsConected.delete(socket.id);
-    io.emit("clients-total", socketsConected.size);
-  });
+//   socket.on("disconnect", () => {
+//     console.log("Socket disconnected", socket.id);
+//     socketsConected.delete(socket.id);
+//     io.emit("clients-total", socketsConected.size);
+//   });
 
-  socket.on("message", (data) => {
-    console.log(data);
-    socket.broadcast.emit("chat-message", data);
-  });
+//   socket.on("message", (data) => {
+//     console.log(data);
+//     socket.broadcast.emit("chat-message", data);
+//   });
 
-  socket.on("feedback", (data) => {
-    socket.broadcast.emit("feedback", data);
-  });
-}
+//   socket.on("feedback", (data) => {
+//     socket.broadcast.emit("feedback", data);
+//   });
+// }

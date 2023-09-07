@@ -39,11 +39,14 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   };
 
   const scrollToBottom = (smooth) => {
-    messageContainerDummyDivRef.current.scrollIntoView(smooth ? { behavior: "smooth" } : {});
+    messageContainerDummyDivRef.current.scrollIntoView()
+    // messageContainerDummyDivRef.current.scrollIntoView(smooth ? { behavior: "smooth" } : {});
     // scrollTo(0, 200000)
     // messageContainer.scrollTo(0, messageContainer.scrollHeight)
   };
 
+  // ONLY THIS TRULLY WORKS
+  useEffect(() => {scrollToBottom()}, [messages])
   // messageInput.addEventListener('focus', (e) => {
   //   socket.emit('feedback', {
   //     feedback: `✍️ ${nameInput.value} is typing a message`,
@@ -84,7 +87,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
       }))
     );
 
-    scrollToBottom()
+    scrollToBottom(true)
   }, [chat]);
 
   // console.log({ messages });
@@ -115,6 +118,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     socket.emit("message", data);
     addMessageToUI(true, data);
     setMessageInput("");
+    scrollToBottom(true)
   };
 
   return (
@@ -140,7 +144,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
           id="message-container"
           ref={messageContainerRef}
         >
-          {messages.map(({ ownMessage, data }) => (
+          {messages.map(({ ownMessage, data }, idx) => (
             <li
               key={data.dateTime}
               className={ownMessage ? "message-right" : "message-left"}

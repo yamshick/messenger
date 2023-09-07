@@ -80,7 +80,6 @@ export const Profile = () => {
             style={{
               display: "flex",
               flexDirection: "space-between",
-              border: "solid 1px",
               width: "100%",
             }}
           >

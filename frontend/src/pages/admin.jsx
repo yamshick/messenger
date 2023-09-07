@@ -63,7 +63,7 @@ export const Admin = () => {
   const onRoleSelect = async (event, user) => {
     const { value } = event.target;
     const properValue = JSON.parse(value);
-    console.warn("on role select", { event, properValue });
+    // console.warn("on role select", { event, properValue });
     const updatedUser = {
       ...user,
       role: properValue.name,
@@ -78,7 +78,7 @@ export const Admin = () => {
   };
 
   const onChatRemove = async (chat) => {
-    console.warn({ chat });
+    // console.warn({ chat });
     await dispatch(deleteChatThunk({ chat }));
     fetchChats();
   };

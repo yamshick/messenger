@@ -68,6 +68,11 @@ export const Admin = () => {
     fetchUsers();
   };
 
+  const onUserAdd = () => {
+    // TODO
+    // setShouldShowUserAddPanel(true);
+  }
+
   return (
     <div style={{ display: "flex", justifyContent: "space-between", gap: 3 }}>
       {/* <div>
@@ -76,7 +81,17 @@ export const Admin = () => {
         </div>
   */}
       <div>
-        <h3>Пользователи</h3>
+        <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: 'center',
+                            gap: 3,
+                          }}          
+        >
+            <h3>Пользователи</h3>
+            <button onClick={onUserAdd}> Добавить </button>
+        </div>
         <ul>
           {users.map((user) => (
             <li key={user.id}>

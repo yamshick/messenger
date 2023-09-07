@@ -20,8 +20,7 @@ module.exports = function (app, db) {
     console.log("/api/chat", { userIds, sortedUserIds });
     processData(
       res,
-      `SELECT * FROM Chats where USERS == '${sortedUserIds}'`,
-      {}
+      `SELECT * FROM Chats where USERS == '${sortedUserIds}'`
     );
 
     // processData(res, `
@@ -109,18 +108,16 @@ module.exports = function (app, db) {
         if (err) {
           console.error(err);
           res.status(500).send(err);
-        } else sendData(res, rows, err, emptyResponse);
+        } else sendData(res, rows, err);
       });
     });
   }
 
-  function sendData(res, data, err, emptyResponse) {
+  function sendData(res, data, err) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     console.log({ data });
-    if (data && !data.length) {
-      res.send(emptyResponse);
-    } else if (data) {
+    if (data) {
       res.send(data);
     } else {
       res.status(404).send("Not found");

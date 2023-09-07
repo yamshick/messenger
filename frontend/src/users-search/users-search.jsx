@@ -69,9 +69,9 @@ export const UsersSearch = ({
 
       activeChat = activeChat ? activeChat[0] : activeChat;
 
-      // console.warn({activeChat})
+      console.warn({activeChat})
       // empty chat
-      if (!Object.entries(activeChat).length) {
+      if (!activeChat) {
         activeChat =
           (await dispatch(
             postChatThunk({

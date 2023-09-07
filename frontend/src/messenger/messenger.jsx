@@ -67,8 +67,20 @@ export const Messenger = ({ userName, userId, login, chat }) => {
       chat,
     });
 
-    setMessages([]);
+    console.warn(chat)
+    const parsedChatMessages = JSON.parse(chat.messages);
+    const chatMessages = Array.isArray(parsedChatMessages)
+      ? parsedChatMessages
+      : [];
+    console.warn({ chatMessages });
+    setMessages(
+      chatMessages.map(({ data }) => ({
+        ownMessage: data.userId === userId,
+        data,
+      }))
+    );
   }, [chat]);
+
   console.log({ messages });
 
   socket.on("clients-total", (data) => {

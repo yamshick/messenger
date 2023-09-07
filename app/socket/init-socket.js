@@ -58,9 +58,40 @@ module.exports = function (io, db) {
 
     socket.on("message", (messageData) => {
       console.log(messageData);
-      const { chat } = messageData;
+      const { name, message, userId, dateTime, login, chat } = messageData;
+
+      const parsedChatMessages = JSON.parse(chat.messages);
+      const chatMessages = Array.isArray(parsedChatMessages)
+        ? parsedChatMessages
+        : [];
+      chatMessages.push({
+        data: {
+          name,
+          message,
+          userId,
+          dateTime,
+          login,
+        },
+      });
+      chat.messages = chatMessages;
       // socket.in(chat.id).broadcast.emit("chat-message", messageData);
+      console.log({chatMessages})
       socket.in(chat.id).emit("chat-message", messageData);
+
+      const sql = `update CHATS set messages = ? where id = ?;`;
+
+      const values = [JSON.stringify(chatMessages), chat.id];
+
+      db.serialize(function () {
+        db.run(sql, values, function (err) {
+          if (err) {
+            console.error(err);
+            // TODO: handle error
+          }
+        //     res.status(500).send(err);
+        //   } else res.send();
+        });
+      });
     });
   });
 };

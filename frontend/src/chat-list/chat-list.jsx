@@ -47,7 +47,7 @@ export const ChatList = (
         {chats &&
           chats.map((chat, idx) => (
             <li key={idx} onClick={() => onChatClick(chat)}>
-              <pre>{JSON.stringify(chat, null, 2)}</pre>
+              <pre>{JSON.stringify(chat.name, null, 2)}</pre>
             </li>
           ))}
       </ul>

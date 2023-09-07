@@ -101,7 +101,7 @@ function insertChat(req, res, db) {
     // chat
   });
   const users = rawUsers.join(",");
-  const messages = "[]";
+  const messages = '[]';
 
   const sql = `insert into Chats (name, users, messages) 
             VALUES 

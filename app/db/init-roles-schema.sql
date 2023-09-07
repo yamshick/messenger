@@ -1,4 +1,22 @@
-insert into Roles (name, priority) VALUES ("admin", 1);
-insert into Roles (name, priority) VALUES ("user", 2);
-insert into Roles (name, priority) VALUES ("superuser", 3);
+-- insert into Roles (name, priority) 
+--             VALUES ("admin", 1)
+--             WHERE NOT EXISTS (
+--                 SELECT * 
+--                 FROM Roles
+--                 WHERE name = "admin"
+--             );            
+-- insert into Roles (name, priority) 
+--             VALUES ("user", 2)
+--             WHERE NOT EXISTS (
+--                 SELECT * 
+--                 FROM Roles
+--                 WHERE name = "user"
+--             );            
+-- insert into Roles (name, priority) 
+--             VALUES ("superuser", 3)
+--             WHERE NOT EXISTS (
+--                 SELECT * 
+--                 FROM Roles
+--                 WHERE name = "superuser"
+--             );            
 

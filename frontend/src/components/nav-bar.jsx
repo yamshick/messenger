@@ -21,21 +21,22 @@ export const NavBar = () => {
   return (
     <Router>
       <>
-      {!isAuth && ( 
-        <nav className={styles.nav}>
-          {[
-            // { name: "Главная", link: hashRoutes.ROOT, id: 1 },
-            { name: "Логин", link: hashRoutes.LOGIN, id: 2 },
-            { name: "Регистрация", link: hashRoutes.REGISTRATION, id: 3 },
-            // { name: "Профиль", link: hashRoutes.PROFILE, id: 4 },
-          ].map(({ name, link, id }) => (
-            <div key={id}>
-              <NavLink className={styles.navLink} to={link}>
-                {name}
-              </NavLink>
-            </div>
-          ))}
-        </nav>)}
+        {!isAuth && (
+          <nav className={styles.nav}>
+            {[
+              // { name: "Главная", link: hashRoutes.ROOT, id: 1 },
+              { name: "Логин", link: hashRoutes.LOGIN, id: 2 },
+              { name: "Регистрация", link: hashRoutes.REGISTRATION, id: 3 },
+              // { name: "Профиль", link: hashRoutes.PROFILE, id: 4 },
+            ].map(({ name, link, id }) => (
+              <div key={id}>
+                <NavLink className={styles.navLink} to={link}>
+                  {name}
+                </NavLink>
+              </div>
+            ))}
+          </nav>
+        )}
         <Routes>
           <Route path="/" element={<Profile />}></Route>
           <Route path="/login" element={<Login />}></Route>

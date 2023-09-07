@@ -38,9 +38,8 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     setFeedback([]);
   };
 
-  const scrollToBottom = () => {
-    messageContainerDummyDivRef.current
-    .scrollIntoView({ behavior: "smooth" });
+  const scrollToBottom = (smooth) => {
+    messageContainerDummyDivRef.current.scrollIntoView(smooth ? { behavior: "smooth" } : {});
     // scrollTo(0, 200000)
     // messageContainer.scrollTo(0, messageContainer.scrollHeight)
   };
@@ -61,7 +60,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     clearFeedback();
 
     setMessages([...messages, { ownMessage, data }]);
-    scrollToBottom();
+    scrollToBottom(true);
   };
 
   useEffect(() => {
@@ -84,6 +83,8 @@ export const Messenger = ({ userName, userId, login, chat }) => {
         data,
       }))
     );
+
+    scrollToBottom()
   }, [chat]);
 
   // console.log({ messages });
@@ -134,7 +135,11 @@ export const Messenger = ({ userName, userId, login, chat }) => {
           />
         </div>
 
-        <ul className="message-container" id="message-container" ref={messageContainerRef}>
+        <ul
+          className="message-container"
+          id="message-container"
+          ref={messageContainerRef}
+        >
           {messages.map(({ ownMessage, data }) => (
             <li
               key={data.dateTime}

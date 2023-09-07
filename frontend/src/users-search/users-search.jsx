@@ -69,7 +69,7 @@ export const UsersSearch = ({
 
       activeChat = activeChat ? activeChat[0] : activeChat;
 
-      console.warn({activeChat})
+      console.warn({ activeChat });
       // empty chat
       if (!activeChat) {
         activeChat =

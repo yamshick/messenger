@@ -18,10 +18,7 @@ module.exports = function (app, db) {
       .sort((a, b) => a - b)
       .join(",");
     console.log("/api/chat", { userIds, sortedUserIds });
-    processData(
-      res,
-      `SELECT * FROM Chats where USERS == '${sortedUserIds}'`
-    );
+    processData(res, `SELECT * FROM Chats where USERS == '${sortedUserIds}'`);
 
     // processData(res, `
     //   SELECT * FROM Chats

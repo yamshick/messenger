@@ -67,7 +67,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
       chat,
     });
 
-    console.warn(chat)
+    console.warn(chat);
     const parsedChatMessages = JSON.parse(chat.messages);
     const chatMessages = Array.isArray(parsedChatMessages)
       ? parsedChatMessages

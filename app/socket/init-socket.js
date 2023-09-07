@@ -75,7 +75,7 @@ module.exports = function (io, db) {
       });
       chat.messages = chatMessages;
       // socket.in(chat.id).broadcast.emit("chat-message", messageData);
-      console.log({chatMessages})
+      console.log({ chatMessages });
       socket.in(chat.id).emit("chat-message", messageData);
 
       const sql = `update CHATS set messages = ? where id = ?;`;
@@ -88,8 +88,8 @@ module.exports = function (io, db) {
             console.error(err);
             // TODO: handle error
           }
-        //     res.status(500).send(err);
-        //   } else res.send();
+          //     res.status(500).send(err);
+          //   } else res.send();
         });
       });
     });

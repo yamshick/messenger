@@ -4,6 +4,7 @@ import {
   FETCH_USERS,
   FETCH_CHAT,
   POST_CHAT,
+  FETCH_CHAT_BY_ID,
 } from "../../api/constants";
 import { httpService } from "../../service/http-service";
 
@@ -19,6 +20,15 @@ export const fetchChatsThunk = createAsyncThunk(
     return res;
   }
 );
+
+export const fetchChatByIdThunk = createAsyncThunk(
+  "chat-by-id/fetch",
+  async ({ chatId }) => {
+    const res = await httpService.get(FETCH_CHAT_BY_ID, { chatId });
+    return res;
+  }
+);
+
 
 export const fetchChatThunk = createAsyncThunk(
   "chat/fetch",

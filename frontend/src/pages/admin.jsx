@@ -4,7 +4,9 @@ import {
   adminSlice,
   fetchChatsThunk,
   fetchRolesThunk,
-  fetchUsersThunk
+  fetchUsersThunk,
+  updateUserThunk,
+  deleteUserThunk
 } from "../store/reducers/admin-slice";
 
 export const Admin = () => {
@@ -48,14 +50,22 @@ export const Admin = () => {
     fetchChats();
   }, []);
 
-  const onUserRemove = (user) => {
+  const onUserRemove = async (user) => {
     console.warn({user})
+    await dispatch(deleteUserThunk({user}));
+    fetchUsers()
   }
 
-  const onRoleSelect = (event) => {
+  const onRoleSelect = async (event, user) => {
     const {value} = event.target; 
     const properValue = JSON.parse(value)
     console.warn('on role select', {event, properValue})
+    const updatedUser = {
+        ...user,
+        role: properValue.name
+    }
+    await dispatch(updateUserThunk({user: updatedUser}));
+    fetchUsers()
   }
 
   return (
@@ -71,17 +81,26 @@ export const Admin = () => {
             {users.map(user => (
                 <li key={user.id}>
                     <div style={{display:'flex', justifyContent: 'space-between', gap: 3}}>
-                    <p>
-                    {`name: ${user.firstName} ${user.secondName}, login: ${user.login}`}
-                    </p>
+                    <div>
+                        <p>
+                        {`name: ${user.firstName} ${user.secondName}`}
+                        </p>
+                        <p>
+                        {`login: ${user.login}`}
+                        </p>
+                    </div>
+                    <div style={{display:'flex', justifyContent: 'space-between', gap: 3}}>
                     <button disabled={user.login === 'admin'} onClick={() => onUserRemove(user)}>Удалить</button>
-                    <select onChange={onRoleSelect}>
+                    <select onChange={event => onRoleSelect(event, user)}
+                    value={JSON.stringify(roles.find(role => role.name === user.role))}
+                    >
                         {roles.map(role => (
                         <option disabled={user.login === 'admin'} key={role.id} value={JSON.stringify(role)}>
                             {role.name}
                         </option>
                         ))}
                     </select>
+                    </div>
                     </div>
                 </li>
             ))}

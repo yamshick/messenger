@@ -1,7 +1,7 @@
 const getRoutes = require("./get-routes");
 const postRoutes = require("./post-routes");
-const putRoutes = require("./product-put-route");
-const deleteRoutes = require("./product-delete-route");
+const putRoutes = require("./put-routes");
+const deleteRoutes = require("./delete-routes");
 const loadDatabase = require("../db/setup-database");
 const initSocket = require("../socket/init-socket");
 

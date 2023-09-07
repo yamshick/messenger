@@ -26,4 +26,28 @@ export const httpService = {
 
     return await response.json();
   },
+
+  put: async (url, body) => {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(body),
+    });
+
+    return await response.json();
+  },
+
+  delete: async (url, body) => {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(body),
+    });
+
+    return await response.json();
+  },
 };

@@ -34,6 +34,20 @@ export const fetchChatsThunk = createAsyncThunk(
   }
 );
 
+export const updateUserThunk = createAsyncThunk(
+    "admin/update-user",
+    async ({user}) => {
+      return await httpService.put(UPDATE_USER, user);
+    }
+  );
+
+  export const deleteUserThunk = createAsyncThunk(
+    "admin/delete-user",
+    async ({user}) => {
+      return await httpService.delete(DELETE_USER, user);
+    }
+  );
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState: initialState,

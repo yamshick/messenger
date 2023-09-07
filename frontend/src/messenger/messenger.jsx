@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "styles/style.style";
 import { io } from "socket.io-client";
 import moment from "moment";
@@ -9,9 +9,11 @@ const socket = io();
 const messageTone = new Audio(messageToneRaw);
 
 export const Messenger = ({ userName, userId, login, chat }) => {
-  console.log({ chat });
+  // console.log({ chat });
   if (!chat) return null;
 
+  const messageContainerRef = useRef();
+  const messageContainerDummyDivRef = useRef();
   const [clientsCount, setClientsCount] = useState(1);
   const [nameInput, setNameInput] = useState(userName);
   // TODO
@@ -37,6 +39,9 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   };
 
   const scrollToBottom = () => {
+    messageContainerDummyDivRef.current
+    .scrollIntoView({ behavior: "smooth" });
+    // scrollTo(0, 200000)
     // messageContainer.scrollTo(0, messageContainer.scrollHeight)
   };
 
@@ -72,7 +77,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     const chatMessages = Array.isArray(parsedChatMessages)
       ? parsedChatMessages
       : [];
-    console.warn({ chatMessages });
+    // console.warn({ chatMessages });
     setMessages(
       chatMessages.map(({ data }) => ({
         ownMessage: data.userId === userId,
@@ -81,7 +86,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     );
   }, [chat]);
 
-  console.log({ messages });
+  // console.log({ messages });
 
   socket.on("clients-total", (data) => {
     console.log("clients-total", { data });
@@ -129,7 +134,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
           />
         </div>
 
-        <ul className="message-container" id="message-container">
+        <ul className="message-container" id="message-container" ref={messageContainerRef}>
           {messages.map(({ ownMessage, data }) => (
             <li
               key={data.dateTime}
@@ -143,6 +148,8 @@ export const Messenger = ({ userName, userId, login, chat }) => {
               </p>
             </li>
           ))}
+          {/* dummy dif for scrolling to bottom */}
+          <div ref={messageContainerDummyDivRef}></div>
         </ul>
 
         <div className="message-form" id="message-form">

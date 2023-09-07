@@ -24,8 +24,8 @@ export const Login = () => {
     try {
       const res = await dispatch(loginThunk({ login, password })).unwrap();
       if (res.error) {
-        setErrorMessage(res.error?.message);
-        throw new Error(res.error?.message);
+        setErrorMessage(res.error);
+        throw new Error(res.error);
       }
       const { user } = res;
       console.warn({ user });

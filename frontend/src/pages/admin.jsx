@@ -244,7 +244,7 @@ export const Admin = () => {
         )}
         <ul>
           {users.map((user) => (
-            <li key={user.id} style={{listStyle: 'none', border: 'solid 1px', borderRadius: '4px'}}>
+            <li key={user.id} style={{listStyle: 'none', border: 'solid 1px', borderRadius: '4px', margin: '4px'}}>
               <div
                 style={{
                   display: "flex",
@@ -268,6 +268,7 @@ export const Admin = () => {
                   <p>{`name: ${user.firstName} ${user.secondName}`}</p>
                   <p>{`id: ${user.id}`}</p>
                   <p>{`login: ${user.login}`}</p>
+                  <p>{`password: ${user.password}`}</p>
                 </div>
                 <div
                   style={{

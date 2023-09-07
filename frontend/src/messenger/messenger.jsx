@@ -44,7 +44,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     try {
       messageContainerDummyDivRef.current.scrollIntoView();
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
     // messageContainerDummyDivRef.current.scrollIntoView(smooth ? { behavior: "smooth" } : {});
     // scrollTo(0, 200000)

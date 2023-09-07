@@ -32,17 +32,17 @@ function onSocketConnection({ io, db, socket, socketsConected, rooms }) {
 
     // removing room
     try {
-      console.log('rooms', rooms)
+      console.log("rooms", rooms);
       const room = rooms.find((room) => room?.socketIds?.includes(socket.id));
       if (room) {
-        console.log('found room on disconect', room)
+        console.log("found room on disconect", room);
         room.socketIds = room?.socketIds?.filter(
           (socketId) => socketId !== socket.id
         );
         if (room?.socketIds?.length === 0) {
           const roomId = room.id;
           rooms = rooms?.filter((room) => room.id !== roomId);
-        }  
+        }
       }
     } catch (e) {
       console.error("removing room error", { e });

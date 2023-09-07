@@ -1,14 +1,14 @@
 // TODO: common function
 async function db_all(db, query, params) {
-    return new Promise(function (resolve, reject) {
-      db.all(query, params, function (err, rows) {
-        if (err) {
-          return reject(err);
-        }
-        resolve(rows);
-      });
+  return new Promise(function (resolve, reject) {
+    db.all(query, params, function (err, rows) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(rows);
     });
-  }
+  });
+}
 
 module.exports = function (io, db) {
   let socketsConected = new Set();
@@ -71,53 +71,53 @@ module.exports = function (io, db) {
     socket.on("message", async (messageData) => {
       const { name, message, userId, dateTime, login, chat } = messageData;
 
-      const selectMessagesSql = `
+      const selectMessagesSql =
+        `
       SELECT * FROM Chats 
       WHERE id =  
-      ` + chat.id
+      ` + chat.id;
 
       const dbChatInstanceRows = await db_all(db, selectMessagesSql);
       const dbMessages = JSON.parse(dbChatInstanceRows[0].messages);
 
-      console.log('on message socket', {dbChatInstanceRows, dbMessages})
-    //   db.serialize(function () {
-    //     db.all(selectMessagesSql, function (err, rows) {
-    //       if (err) {
-    //         console.error(err);
-    //         // TODO: handle error
-    //       } else {
+      console.log("on message socket", { dbChatInstanceRows, dbMessages });
+      //   db.serialize(function () {
+      //     db.all(selectMessagesSql, function (err, rows) {
+      //       if (err) {
+      //         console.error(err);
+      //         // TODO: handle error
+      //       } else {
 
-    //       }
-    //     });
-    //   });
+      //       }
+      //     });
+      //   });
 
-    //   const parsedChatMessages = JSON.parse(chat.messages);
-    //   let chatMessages = Array.isArray(parsedChatMessages)
-    //     ? parsedChatMessages
-    //     : [];
-      chatMessages = [...dbMessages, ({
-        data: {
-          name,
-          message,
-          userId,
-          dateTime,
-          login,
+      //   const parsedChatMessages = JSON.parse(chat.messages);
+      //   let chatMessages = Array.isArray(parsedChatMessages)
+      //     ? parsedChatMessages
+      //     : [];
+      chatMessages = [
+        ...dbMessages,
+        {
+          data: {
+            name,
+            message,
+            userId,
+            dateTime,
+            login,
+          },
         },
-      })];
+      ];
       chat.messages = chatMessages;
       // socket.in(chat.id).broadcast.emit("chat-message", messageData);
-      console.log(
-        'socket message event',
-        {messageData,
-        }
-        );
-        console.warn('chatMessages', chatMessages)
+      console.log("socket message event", { messageData });
+      console.warn("chatMessages", chatMessages);
       socket.in(chat.id).emit("chat-message", messageData);
 
       const sql = `update CHATS set messages = ? where id = ?;`;
 
-      const stringifiedMessages = JSON.stringify(chatMessages)
-      console.log([stringifiedMessages])
+      const stringifiedMessages = JSON.stringify(chatMessages);
+      console.log([stringifiedMessages]);
       const values = [stringifiedMessages, chat.id];
 
       db.serialize(function () {

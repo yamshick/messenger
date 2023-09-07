@@ -1,7 +1,7 @@
 module.exports = function (app, db) {
   app.get("/api/users/:loginPredicate", (req, res) => {
     const predicate = req.params.loginPredicate;
-    console.log('login predicate', { predicate });
+    console.log("login predicate", { predicate });
     if (!predicate) {
       return res.json([]);
     }
@@ -114,7 +114,7 @@ module.exports = function (app, db) {
   function sendData(res, data, err) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    console.log('seding data', { data });
+    console.log("seding data", { data });
     if (data) {
       res.send(data);
     } else {

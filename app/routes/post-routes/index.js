@@ -95,7 +95,7 @@ function processChat(req, res, db) {
 
 function insertChat(req, res, db) {
   const { name, userIds: rawUsers } = req.body;
-  console.log('inserting chat', {
+  console.log("inserting chat", {
     name,
     rawUsers,
     // chat

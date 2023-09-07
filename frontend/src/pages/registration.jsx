@@ -8,7 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { hashRoutes } from "../constants";
 import { Spinner } from "../ui/spinner";
 
-export const Registration = () => {
+export const Registration = ({onRegister: onRegisterProp}) => {
   const [name, setName] = useState("");
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -87,7 +87,7 @@ export const Registration = () => {
     passwordConfirm,
   ].every(Boolean);
 
-  if (isAuth) return <Navigate to={hashRoutes.PROFILE} />;
+  if (!onRegisterProp && isAuth) return <Navigate to={hashRoutes.PROFILE} />;
   if (isLoading)
     return (
       <div className={styles.formContainer}>
@@ -139,7 +139,10 @@ export const Registration = () => {
       ) : (
         <>
           <div className={styles.textMessage}>Регистрация прошла успешно</div>
+          {onRegisterProp ? 
+          <Button onClick={onRegisterProp}>Закрыть</Button> :          
           <Button onClick={onLogin}>Войти</Button>
+        }
         </>
       )}
     </div>

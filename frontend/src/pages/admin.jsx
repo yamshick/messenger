@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   adminSlice,
@@ -8,9 +8,12 @@ import {
   updateUserThunk,
   deleteUserThunk,
 } from "../store/reducers/admin-slice";
+import { Registration } from "./registration";
 
 export const Admin = () => {
   const dispatch = useDispatch();
+  const [shouldShowUserAddPanel, setShouldShowUserAddPanel] = useState(false)
+
   const { roles, chats, users } = useSelector((state) => state.adminReducer);
   const { setRoles, setChats, setUsers } = adminSlice.actions;
 
@@ -70,9 +73,13 @@ export const Admin = () => {
 
   const onUserAdd = () => {
     // TODO
-    // setShouldShowUserAddPanel(true);
+    setShouldShowUserAddPanel(true);
   }
 
+  const onRegister = () => {
+    setShouldShowUserAddPanel(false)
+    fetchUsers()
+  }
   return (
     <div style={{ display: "flex", justifyContent: "space-between", gap: 3 }}>
       {/* <div>
@@ -92,6 +99,9 @@ export const Admin = () => {
             <h3>Пользователи</h3>
             <button onClick={onUserAdd}> Добавить </button>
         </div>
+        {shouldShowUserAddPanel && (
+            <Registration onRegister={onRegister}/>
+        )}
         <ul>
           {users.map((user) => (
             <li key={user.id}>

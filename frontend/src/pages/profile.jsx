@@ -31,8 +31,9 @@ export const Profile = () => {
     <>
       {isAuth ? (
         <div className={styles.formContainer}>
-          <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
-          <div className={styles.textMessage}>{`ROLE: ${role}!`}</div>
+              <Button onClick={onLogout}>Выйти</Button>
+          {/* <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
+          <div className={styles.textMessage}>{`ROLE: ${role}!`}</div> */}
           {/* <Chat /> */}
           <div
             style={{
@@ -57,7 +58,6 @@ export const Profile = () => {
                 userId={userId}
                 login={login}
               />
-              <Button onClick={onLogout}>Выйти</Button>
             </div>
           </div>
         </div>

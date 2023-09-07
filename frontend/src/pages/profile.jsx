@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { hashRoutes } from "../constants";
@@ -11,16 +11,60 @@ import { Messenger } from "../messenger/messenger";
 import { UsersSearch } from "../users-search/users-search";
 import { ChatList } from "../chat-list/chat-list";
 import { Admin } from "./admin";
+import {
+  fetchChatsThunk,
+  chatsSlice,
+  fetchChatThunk,
+  fetchChatByIdThunk,
+} from "../store/reducers/chat-slice";
 
 export const Profile = () => {
   const { isAuth, userName, userId, login, role } = useSelector(
     (state) => state.authReducer
   );
-  const { activeChat } = useSelector((state) => state.chatsReducer);
+
+  const { chats } = useSelector((state) => state.chatsReducer);
+  const {activeChat} = useSelector((state) => state.chatsReducer);
+  const { setChats, setActiveChat } = chatsSlice.actions;
+
 
   const { setUser, setIsAuth } = authSlice.actions;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // const { chats } = useSelector((state) => state.chatsReducer);
+
+
+  const fetchChats = async (userId) => {
+    if (!userId) {
+      dispatch(setChats([]));
+      return;
+    }
+
+    try {
+      const res = await dispatch(fetchChatsThunk({ userId })).unwrap();
+      if (res.error) {
+        console.error(res.error);
+        //   setErrorMessage(res.error?.message);
+        //   throw new Error(res.error?.message);
+      }
+      dispatch(setChats(res));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchChats(userId);
+  }, [userId]);
+
+  useEffect(() => {
+    console.log({chats})
+    if (chats.length) {
+      dispatch(setActiveChat(chats[0]))
+    }
+  }, [])
+
   const onLogout = () => {
     dispatch(setIsAuth(false));
     // Разобраться
@@ -84,12 +128,17 @@ export const Profile = () => {
             }}
           >
             <div>
+              { ['superuser'].includes(role) && (
               <div>
-                <UsersSearch userId={userId} />
-              </div>
-              <div>
-                <ChatList />
-              </div>
+              <UsersSearch userId={userId} />
+            </div>)
+
+              }
+              { ['superuser'].includes(role) || chats.length > 1 &&
+              (<div>
+              <ChatList chats={chats}/>
+            </div>)
+              }
             </div>
             <div>
               <Messenger

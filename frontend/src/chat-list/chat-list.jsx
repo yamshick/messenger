@@ -10,14 +10,13 @@ import { authSlice } from "../store/reducers/auth-slice";
 
 export const ChatList = (
   {
-    //   value: loginPredicate,
-    //   onChange: onChangeProp,
+    chats
   }
 ) => {
   const { setChats, setActiveChat } = chatsSlice.actions;
 
   const { userId } = useSelector((state) => state.authReducer);
-  const { chats } = useSelector((state) => state.chatsReducer);
+  // const { chats } = useSelector((state) => state.chatsReducer);
 
   const dispatch = useDispatch();
 

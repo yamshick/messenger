@@ -29,7 +29,6 @@ export const fetchChatByIdThunk = createAsyncThunk(
   }
 );
 
-
 export const fetchChatThunk = createAsyncThunk(
   "chat/fetch",
   async ({ userIds }) => {

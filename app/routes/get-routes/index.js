@@ -47,7 +47,7 @@ module.exports = function (app, db) {
   // Load products by ID: http://localhost:4300/api/product/id/$id
   // example: http://localhost:4300/api/product/id/15
   app.get("/api/chat/id/", (req, res) => {
-    const chatId = req.query.chatId
+    const chatId = req.query.chatId;
     processData(res, "SELECT * FROM chats where id == " + chatId);
   });
 

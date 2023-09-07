@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChatsThunk, chatsSlice, fetchChatThunk, fetchChatByIdThunk } from "../store/reducers/chat-slice";
+import {
+  fetchChatsThunk,
+  chatsSlice,
+  fetchChatThunk,
+  fetchChatByIdThunk,
+} from "../store/reducers/chat-slice";
 import { authSlice } from "../store/reducers/auth-slice";
 
 export const ChatList = (
@@ -40,14 +45,16 @@ export const ChatList = (
   }, [userId]);
 
   const updateActiveChat = async (chat) => {
-    const {id } = chat
-    const activeChat = await dispatch(fetchChatByIdThunk({chatId: id})).unwrap() 
+    const { id } = chat;
+    const activeChat = await dispatch(
+      fetchChatByIdThunk({ chatId: id })
+    ).unwrap();
     dispatch(setActiveChat(activeChat[0]));
-  } 
+  };
 
   const onChatClick = (chat) => {
-    updateActiveChat(chat)    
-  }
+    updateActiveChat(chat);
+  };
 
   return (
     <div>

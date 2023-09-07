@@ -31,9 +31,10 @@ export const Profile = () => {
   if (role === "admin") {
     return (
       <>
-      <Button onClick={onLogout}>Выйти</Button>
-    <Admin /></>)
-    ;
+        <Button onClick={onLogout}>Выйти</Button>
+        <Admin />
+      </>
+    );
   }
 
   return (

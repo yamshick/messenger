@@ -23,9 +23,9 @@ export const fetchRolesThunk = createAsyncThunk("admin/roles", async () => {
 });
 
 export const fetchUsersThunk = createAsyncThunk("admin/users", async () => {
-    const res = await httpService.get(FETCH_USERS);
-    return res;
-  });
+  const res = await httpService.get(FETCH_USERS);
+  return res;
+});
 
 export const fetchChatsThunk = createAsyncThunk(
   "admin/fetch-chats",
@@ -35,18 +35,18 @@ export const fetchChatsThunk = createAsyncThunk(
 );
 
 export const updateUserThunk = createAsyncThunk(
-    "admin/update-user",
-    async ({user}) => {
-      return await httpService.put(UPDATE_USER, user);
-    }
-  );
+  "admin/update-user",
+  async ({ user }) => {
+    return await httpService.put(UPDATE_USER, user);
+  }
+);
 
-  export const deleteUserThunk = createAsyncThunk(
-    "admin/delete-user",
-    async ({user}) => {
-      return await httpService.delete(DELETE_USER, user);
-    }
-  );
+export const deleteUserThunk = createAsyncThunk(
+  "admin/delete-user",
+  async ({ user }) => {
+    return await httpService.delete(DELETE_USER, user);
+  }
+);
 
 export const adminSlice = createSlice({
   name: "admin",

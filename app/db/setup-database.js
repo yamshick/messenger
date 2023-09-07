@@ -53,37 +53,36 @@ module.exports = async function (db) {
 
   // init admin
   try {
-    const selectAdminSql = `select * from Users where login = "admin"`
+    const selectAdminSql = `select * from Users where login = "admin"`;
     const adminUsers = await db_all(db, selectAdminSql);
     if (!adminUsers.length) {
       const insertAdminSql = `
       insert into Users (firstName, secondName, login, password, role) 
             VALUES ("admin", "admin", "admin", "admin", "admin")
-      `
+      `;
       await db_all(db, insertAdminSql);
     }
-  } catch( e) {
-    console.error(e)
+  } catch (e) {
+    console.error(e);
   }
 
   try {
     const insertRoleIfNotExists = async (roleName, priority) => {
-      const selectRoleSql = `select * from Roles where name = "${roleName}"`
+      const selectRoleSql = `select * from Roles where name = "${roleName}"`;
       const roles = await db_all(db, selectRoleSql);
       if (!roles.length) {
         const insertRoleSql = `
         insert into Roles (name, priority) 
               VALUES ("${roleName}", "${priority}")
-        `
+        `;
         await db_all(db, insertRoleSql);
-      }  
-    }
+      }
+    };
 
-    await insertRoleIfNotExists('admin', 1)
-    await insertRoleIfNotExists('superuser', 2)
-    await insertRoleIfNotExists('user', 3)
-
-  } catch( e) {
-    console.error(e)
+    await insertRoleIfNotExists("admin", 1);
+    await insertRoleIfNotExists("superuser", 2);
+    await insertRoleIfNotExists("user", 3);
+  } catch (e) {
+    console.error(e);
   }
 };

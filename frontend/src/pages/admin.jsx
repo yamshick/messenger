@@ -6,7 +6,7 @@ import {
   fetchRolesThunk,
   fetchUsersThunk,
   updateUserThunk,
-  deleteUserThunk
+  deleteUserThunk,
 } from "../store/reducers/admin-slice";
 
 export const Admin = () => {
@@ -28,7 +28,7 @@ export const Admin = () => {
     try {
       const users = await dispatch(fetchUsersThunk()).unwrap();
       console.warn({ users });
-      dispatch(setUsers(users))
+      dispatch(setUsers(users));
     } catch (e) {
       console.error(e);
     }
@@ -51,65 +51,85 @@ export const Admin = () => {
   }, []);
 
   const onUserRemove = async (user) => {
-    console.warn({user})
-    await dispatch(deleteUserThunk({user}));
-    fetchUsers()
-  }
+    console.warn({ user });
+    await dispatch(deleteUserThunk({ user }));
+    fetchUsers();
+  };
 
   const onRoleSelect = async (event, user) => {
-    const {value} = event.target; 
-    const properValue = JSON.parse(value)
-    console.warn('on role select', {event, properValue})
+    const { value } = event.target;
+    const properValue = JSON.parse(value);
+    console.warn("on role select", { event, properValue });
     const updatedUser = {
-        ...user,
-        role: properValue.name
-    }
-    await dispatch(updateUserThunk({user: updatedUser}));
-    fetchUsers()
-  }
+      ...user,
+      role: properValue.name,
+    };
+    await dispatch(updateUserThunk({ user: updatedUser }));
+    fetchUsers();
+  };
 
   return (
-    <div style={{display:'flex', justifyContent: 'space-between', gap: 3}}>
-        {/* <div>
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 3 }}>
+      {/* <div>
             <h3>Роли</h3>
         <pre>{JSON.stringify(roles, null, 2)}</pre>
         </div>
   */}
-        <div>
+      <div>
         <h3>Пользователи</h3>
         <ul>
-            {users.map(user => (
-                <li key={user.id}>
-                    <div style={{display:'flex', justifyContent: 'space-between', gap: 3}}>
-                    <div>
-                        <p>
-                        {`name: ${user.firstName} ${user.secondName}`}
-                        </p>
-                        <p>
-                        {`login: ${user.login}`}
-                        </p>
-                    </div>
-                    <div style={{display:'flex', justifyContent: 'space-between', gap: 3}}>
-                    <button disabled={user.login === 'admin'} onClick={() => onUserRemove(user)}>Удалить</button>
-                    <select onChange={event => onRoleSelect(event, user)}
-                    value={JSON.stringify(roles.find(role => role.name === user.role))}
-                    >
-                        {roles.map(role => (
-                        <option disabled={user.login === 'admin'} key={role.id} value={JSON.stringify(role)}>
-                            {role.name}
-                        </option>
-                        ))}
-                    </select>
-                    </div>
-                    </div>
-                </li>
-            ))}
+          {users.map((user) => (
+            <li key={user.id}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: 3,
+                }}
+              >
+                <div>
+                  <p>{`name: ${user.firstName} ${user.secondName}`}</p>
+                  <p>{`login: ${user.login}`}</p>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: 3,
+                  }}
+                >
+                  <button
+                    disabled={user.login === "admin"}
+                    onClick={() => onUserRemove(user)}
+                  >
+                    Удалить
+                  </button>
+                  <select
+                    onChange={(event) => onRoleSelect(event, user)}
+                    value={JSON.stringify(
+                      roles.find((role) => role.name === user.role)
+                    )}
+                  >
+                    {roles.map((role) => (
+                      <option
+                        disabled={user.login === "admin"}
+                        key={role.id}
+                        value={JSON.stringify(role)}
+                      >
+                        {role.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </li>
+          ))}
         </ul>
-        </div>
-        <div>
+      </div>
+      <div>
         <h3>Чаты</h3>
         <pre>{JSON.stringify(chats, null, 2)}</pre>
-        </div>
+      </div>
     </div>
   );
 };

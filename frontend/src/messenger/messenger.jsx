@@ -67,8 +67,8 @@ export const Messenger = ({ userName, userId, login, chat }) => {
       chat,
     });
 
-    setMessages([])
-  }, [chat])
+    setMessages([]);
+  }, [chat]);
   console.log({ messages });
 
   socket.on("clients-total", (data) => {

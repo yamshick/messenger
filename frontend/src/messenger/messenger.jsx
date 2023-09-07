@@ -4,14 +4,14 @@ import { io } from "socket.io-client";
 import moment from "moment";
 import messageToneRaw from "assets/message-tone.mp3";
 
-moment.locale('ru')
+moment.locale("ru");
 
 const socket = io();
 
 const messageTone = new Audio(messageToneRaw);
 
 export const Messenger = ({ userName, userId, login, chat }) => {
-  console.log({ chat });
+  // console.log({ chat });
   if (!chat) return null;
 
   const messageContainerRef = useRef();
@@ -41,7 +41,11 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   };
 
   const scrollToBottom = (smooth) => {
-    messageContainerDummyDivRef.current.scrollIntoView();
+    try {
+      messageContainerDummyDivRef.current.scrollIntoView();
+    } catch (e) {
+      console.error(e)
+    }
     // messageContainerDummyDivRef.current.scrollIntoView(smooth ? { behavior: "smooth" } : {});
     // scrollTo(0, 200000)
     // messageContainer.scrollTo(0, messageContainer.scrollHeight)
@@ -64,8 +68,9 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   // })
 
   const addMessageToUI = (ownMessage, data) => {
-    clearFeedback();
+    // clearFeedback();
 
+    console.log("addMessageToUI", { ownMessage, data });
     setMessages([...messages, { ownMessage, data }]);
     scrollToBottom(true);
   };
@@ -101,11 +106,17 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   });
 
   socket.on("chat-message", (data) => {
-    // console.log({ data });
-    messageTone.play();
+    console.log({ data: data });
+    try {
+      messageTone.play();
+    } catch (e) {
+      console.error(e);
+    }
     // setMessages([...messages, { ownMessage:, data }]);
     addMessageToUI(false, data);
   });
+
+  console.log({ messages });
 
   const sendMessage = () => {
     if (!messageInput) return;
@@ -125,11 +136,21 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   };
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-      <h1 className="title">{
-      chat.name
-      // "Чат"
-      } 💬</h1>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <h1 className="title">
+        {
+          chat.name
+          // "Чат"
+        }{" "}
+        💬
+      </h1>
       <div className="main">
         {/* <div className="name">
           <span>

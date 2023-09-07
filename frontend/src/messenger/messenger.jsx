@@ -9,7 +9,7 @@ const socket = io();
 const messageTone = new Audio(messageToneRaw);
 
 export const Messenger = ({ userName, userId, login, chat }) => {
-  // console.log({chat})
+  console.log({chat})
   if (!chat) return null;
 
   const [clientsCount, setClientsCount] = useState(1);

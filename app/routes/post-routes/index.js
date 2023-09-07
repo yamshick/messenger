@@ -55,11 +55,7 @@ module.exports = function (app, db) {
 
     const data = req.body;
     console.log({ data });
-    processUser(req, res, db);
-
-    //     if((data.constructor === Array))
-    //        processProducts(req, res, db);
-    //     else
+    insertChat(req, res, db);
   });
 
   // app.post("/api/chat/add", (req, res) => {
@@ -97,23 +93,52 @@ function processChat(req, res, db) {
   insertChat(req.body, res, db);
 }
 
-function insertChat(chat, res, db) {
-  const { name, users: rawUsers } = chat;
+function insertChat(req, res, db) {
+  const { name, userIds: rawUsers } = req.body;
+  console.log({
+    name, 
+    rawUsers, 
+    // chat
+  })
   const users = rawUsers.join(",");
   const messages = "[]";
 
-  var sql = `insert into Chats (name, users, messages) 
+  const sql = `insert into Chats (name, users, messages) 
             VALUES 
             (?, ?, ?);`;
 
-  var values = [name, users, messages];
+  const values = [name, users, messages];
 
+  const selectSql = `select * from Chats 
+  where name == '${name}' and
+  users == '${users}' and 
+  messages == '${messages}'
+  `
+  // does not retrieve any data
   db.serialize(function () {
     db.run(sql, values, function (err) {
       if (err) {
         console.error(err);
         res.status(500).send(err);
-      } else res.send();
+      }
+    }).all(selectSql, function (err, rows) {
+      // if (!rows.length) {
+      //   return res.status(200).send(JSON.stringify({data: null}));
+      // }
+
+      // if (rows.length > 1) {
+      //   const error = new Error('not unique value in db')
+      //   console.error(errerror);
+      //   return res.status(500).send(error?.toString());
+      // }
+
+      if (err) {
+        console.error(err);
+        res.status(500).send(err);
+      } else { 
+        // const oneRow = rows.length ? rows[0] : JSON.stringify({data: null})
+        sendData(res, rows, err);
+      }
     });
   });
 }
@@ -232,5 +257,18 @@ function validateRequest(req, res) {
 
   if (req.body.id) {
     res.status(400).send("ID cannot be submmited");
+  }
+}
+
+function sendData(res, data, err, emptyResponse) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  console.log({ data });
+  if (data && !data.length) {
+    res.send(emptyResponse);
+  } else if (data) {
+    res.send(data);
+  } else {
+    res.status(404).send("Not found");
   }
 }

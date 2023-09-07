@@ -54,7 +54,8 @@ export const Admin = () => {
 
   const onRoleSelect = (event) => {
     const {value} = event.target; 
-    console.warn('on role select', {event, value})
+    const properValue = JSON.parse(value)
+    console.warn('on role select', {event, properValue})
   }
 
   return (
@@ -73,20 +74,18 @@ export const Admin = () => {
                     <p>
                     {`name: ${user.firstName} ${user.secondName}, login: ${user.login}`}
                     </p>
-                    <button onClick={() => onUserRemove(user)}>Удалить</button>
+                    <button disabled={user.login === 'admin'} onClick={() => onUserRemove(user)}>Удалить</button>
                     <select onChange={onRoleSelect}>
                         {roles.map(role => (
-                        <option key={role.id} value={role}>
+                        <option disabled={user.login === 'admin'} key={role.id} value={JSON.stringify(role)}>
                             {role.name}
                         </option>
-                        
                         ))}
                     </select>
                     </div>
                 </li>
             ))}
         </ul>
-        <pre>{JSON.stringify(users, null, 2)}</pre>
         </div>
         <div>
         <h3>Чаты</h3>

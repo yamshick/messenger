@@ -96,7 +96,7 @@ export const Registration = () => {
     );
 
   return (
-    <div className={styles.formContainer} style={{height: '60vh'}}>
+    <div className={styles.formContainer} style={{ height: "60vh" }}>
       {!isRegistered ? (
         <>
           <Input

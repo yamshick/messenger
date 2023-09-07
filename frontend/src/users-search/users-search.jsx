@@ -13,9 +13,7 @@ export const UsersSearch = ({
   onChange: onChangeProp,
 }) => {
   const [predicate, setPredicate] = useState(loginPredicate || "");
-  const { users } = useSelector(
-    (state) => state.usersReducer
-  );
+  const { users } = useSelector((state) => state.usersReducer);
   const { setUsers } = usersSlice.actions;
   const { setActiveChat } = chatsSlice.actions;
 
@@ -71,19 +69,17 @@ export const UsersSearch = ({
 
       // empty chat
       if (!activeChat) {
-        activeChat =
-          await dispatch(
-            postChatThunk({
-              // name: `Чат между ${chatMemberIds}`,
-              name: `Чат между ${chatMemberIds}`,
-              userIds: chatMemberIds,
-            })
-          ).unwrap();
+        activeChat = await dispatch(
+          postChatThunk({
+            // name: `Чат между ${chatMemberIds}`,
+            name: `Чат между ${chatMemberIds}`,
+            userIds: chatMemberIds,
+          })
+        ).unwrap();
 
         activeChat = activeChat ? activeChat[0] : activeChat;
 
         // console.warn({ activeChat });
-
       }
     } catch (e) {
       console.error(e);

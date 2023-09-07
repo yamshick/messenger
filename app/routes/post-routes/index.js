@@ -263,7 +263,7 @@ function validateRequest(req, res) {
 function sendData(res, data, err, emptyResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
-  console.log('sending data', { data });
+  console.log("sending data", { data });
   if (data && !data.length) {
     res.send(emptyResponse);
   } else if (data) {

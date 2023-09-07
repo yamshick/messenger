@@ -1,9 +1,9 @@
 const fs = require("fs");
 // const chatSchema = fs.readFileSync('app/db/chat-schema.sql').toString();
 const schemasFileNames = [
-  "app/db/chat-schema.sql", 
+  "app/db/chat-schema.sql",
   "app/db/users-schema.sql",
-  "app/db/init-admin-user-schema.sql"
+  "app/db/init-admin-user-schema.sql",
 ];
 
 const schemas = (() => {

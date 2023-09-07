@@ -19,11 +19,14 @@ require("./app/routes")(app, db, io);
 app.use(express.static(path.join(__dirname, "frontend/dist")));
 
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend/dist/index.html"), function (err) {
-    if (err) {
-      res.status(500).send(err);
+  res.sendFile(
+    path.join(__dirname, "frontend/dist/index.html"),
+    function (err) {
+      if (err) {
+        res.status(500).send(err);
+      }
     }
-  });
+  );
 });
 // app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(bodyParser.json());

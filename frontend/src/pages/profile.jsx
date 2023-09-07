@@ -26,9 +26,10 @@ export const Profile = () => {
     navigate(hashRoutes.LOGIN);
   };
 
+  console.log({isAuth})
   return (
     <>
-      {isAuth || true ? (
+      {isAuth ? (
         <div className={styles.formContainer}>
           <div className={styles.textMessage}>{`Привет, ${userName}!`}</div>
           <div className={styles.textMessage}>{`ROLE: ${role}!`}</div>

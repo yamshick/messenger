@@ -8,11 +8,7 @@ import {
 } from "../store/reducers/chat-slice";
 import { authSlice } from "../store/reducers/auth-slice";
 
-export const ChatList = (
-  {
-    chats
-  }
-) => {
+export const ChatList = ({ chats }) => {
   const { setChats, setActiveChat } = chatsSlice.actions;
 
   const { userId } = useSelector((state) => state.authReducer);

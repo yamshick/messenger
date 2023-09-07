@@ -13,32 +13,34 @@ import {
   chatsSlice,
   fetchChatThunk,
   postChatThunk,
-} from "../store/reducers/chat-slice";import { Registration } from "./registration";
+} from "../store/reducers/chat-slice";
+import { Registration } from "./registration";
 
 export const Admin = () => {
   const dispatch = useDispatch();
   const [shouldShowUserAddPanel, setShouldShowUserAddPanel] = useState(false);
 
-  const [shouldShowUserActionPanel, setShouldShowUserActionPanel] = useState(false)
-  const [checkedUsers, setCheckedUsers] = useState([])
-  const [areAllUsersChecked, setAreAllUsersChecked] = useState(false)
+  const [shouldShowUserActionPanel, setShouldShowUserActionPanel] =
+    useState(false);
+  const [checkedUsers, setCheckedUsers] = useState([]);
+  const [areAllUsersChecked, setAreAllUsersChecked] = useState(false);
 
-  const [checkedChats, setCheckedChats] = useState([])
-  const [areAllChatsChecked, setAreAllChatsChecked] = useState(false)
+  const [checkedChats, setCheckedChats] = useState([]);
+  const [areAllChatsChecked, setAreAllChatsChecked] = useState(false);
 
   useEffect(() => {
     if (!checkedUsers.length) {
-      setAreAllUsersChecked(false)
+      setAreAllUsersChecked(false);
     }
     // setShouldShowUserActionPanel(!!checkedUsers.length)
-  }, [checkedUsers])
+  }, [checkedUsers]);
 
   useEffect(() => {
     if (!checkedChats.length) {
-      setAreAllChatsChecked(false)
+      setAreAllChatsChecked(false);
     }
     // setShouldShowUserActionPanel(!!checkedUsers.length)
-  }, [checkedChats])
+  }, [checkedChats]);
 
   // console.log({checkedUsers})
 
@@ -111,56 +113,58 @@ export const Admin = () => {
   };
 
   const onCheckUser = (event, user) => {
-    const {checked} = event.target
+    const { checked } = event.target;
     // console.log({checked, user})
     if (checked) {
-      setCheckedUsers([...checkedUsers, user])
+      setCheckedUsers([...checkedUsers, user]);
     } else {
-      setCheckedUsers(checkedUsers.filter(checkedUser => checkedUser.id !== user.id))
+      setCheckedUsers(
+        checkedUsers.filter((checkedUser) => checkedUser.id !== user.id)
+      );
     }
-  }
+  };
 
   const onCheckChat = (event, chat) => {
-    const {checked} = event.target
+    const { checked } = event.target;
     // console.log({checked, user})
     if (checked) {
-      setCheckedChats([...checkedChats, chat])
+      setCheckedChats([...checkedChats, chat]);
     } else {
-      setCheckedChats(checkedChats.filter(checkedChat => checkedChat.id !== chat.id))
+      setCheckedChats(
+        checkedChats.filter((checkedChat) => checkedChat.id !== chat.id)
+      );
     }
-  }
+  };
 
-  
   const onRemoveUsers = () => {
-    checkedUsers.forEach(onUserRemove)
-    setCheckedUsers([])
-  }
-
+    checkedUsers.forEach(onUserRemove);
+    setCheckedUsers([]);
+  };
 
   const onRemoveChats = () => {
-    checkedChats.forEach(onChatRemove)
-    setCheckedChats([])
-  }
+    checkedChats.forEach(onChatRemove);
+    setCheckedChats([]);
+  };
 
   const onChatCreate = async () => {
-    // const chatMemberLogins = checkedUsers.map(({login}) => login) 
+    // const chatMemberLogins = checkedUsers.map(({login}) => login)
     if (checkedUsers.length !== 2) {
-      alert("Пока только можно создать чат между 2 пользователями")
+      alert("Пока только можно создать чат между 2 пользователями");
       return;
     }
 
-    const chatMemberIds = checkedUsers.map(({id}) => id)
-    chatMemberIds.sort((a, b) => a - b)
+    const chatMemberIds = checkedUsers.map(({ id }) => id);
+    chatMemberIds.sort((a, b) => a - b);
 
-    const existingChat =     await dispatch(
+    const existingChat = await dispatch(
       fetchChatThunk({
         userIds: chatMemberIds,
       })
     ).unwrap();
 
     if (existingChat.length) {
-      setCheckedUsers([])
-      alert('чат уже существует')
+      setCheckedUsers([]);
+      alert("чат уже существует");
       return;
     }
 
@@ -172,29 +176,29 @@ export const Admin = () => {
       })
     ).unwrap();
 
-    setCheckedUsers([])
-    fetchChats()
-  }
+    setCheckedUsers([]);
+    fetchChats();
+  };
 
   const onCheckAllUsers = (event) => {
-    const {checked} = event.target;
-    setAreAllUsersChecked(checked)
+    const { checked } = event.target;
+    setAreAllUsersChecked(checked);
     if (checked) {
-      setCheckedUsers(users.filter(user => user.login !== 'admin'))
+      setCheckedUsers(users.filter((user) => user.login !== "admin"));
     } else {
-      setCheckedUsers([])
+      setCheckedUsers([]);
     }
-  }
+  };
 
   const onCheckAllChats = (event) => {
-    const {checked} = event.target;
-    setAreAllChatsChecked(checked)
+    const { checked } = event.target;
+    setAreAllChatsChecked(checked);
     if (checked) {
-      setCheckedChats(chats)
+      setCheckedChats(chats);
     } else {
-      setCheckedChats([])
+      setCheckedChats([]);
     }
-  }
+  };
 
   const onRegister = () => {
     setShouldShowUserAddPanel(false);
@@ -224,45 +228,62 @@ export const Admin = () => {
           <button onClick={onUserAdd}> Добавить </button>
         </div>
         {shouldShowUserAddPanel && <Registration onRegister={onRegister} />}
-        {shouldShowUserActionPanel || true && 
-        (
-          <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "10px",
-          }}>
-                  <input 
-                  checked={areAllUsersChecked}
-                  style={{height: '30px', width: '30px'}}
-                  type='checkbox' onChange={(event) => onCheckAllUsers(event)}/>
-            <button onClick={onRemoveUsers}>Удалить</button>
-            <button 
-            disabled={checkedUsers.length !== 2}
-            onClick={onChatCreate}>Создать чат</button>
-          </div>  
-        )}
+        {shouldShowUserActionPanel ||
+          (true && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+              }}
+            >
+              <input
+                checked={areAllUsersChecked}
+                style={{ height: "30px", width: "30px" }}
+                type="checkbox"
+                onChange={(event) => onCheckAllUsers(event)}
+              />
+              <button onClick={onRemoveUsers}>Удалить</button>
+              <button
+                disabled={checkedUsers.length !== 2}
+                onClick={onChatCreate}
+              >
+                Создать чат
+              </button>
+            </div>
+          ))}
         <ul>
           {users.map((user) => (
-            <li key={user.id} style={{listStyle: 'none', border: 'solid 1px', borderRadius: '4px', margin: '4px'}}>
+            <li
+              key={user.id}
+              style={{
+                listStyle: "none",
+                border: "solid 1px",
+                borderRadius: "4px",
+                margin: "4px",
+              }}
+            >
               <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  alignItems: 'center',
-                  gap: '3px',
-                  margin: '4px',
+                  alignItems: "center",
+                  gap: "3px",
+                  margin: "4px",
                 }}
               >
                 <div>
-                  <input 
-                  checked={
-                    user.login !== 'admin' && 
-                    checkedUsers.map(({id}) => id).includes(user.id)
-                  }
-                  disabled={user.login === 'admin'}
-                  style={{height: '30px', width: '30px'}}
-                  type='checkbox' onChange={(event) => onCheckUser(event, user)}/>
+                  <input
+                    checked={
+                      user.login !== "admin" &&
+                      checkedUsers.map(({ id }) => id).includes(user.id)
+                    }
+                    disabled={user.login === "admin"}
+                    style={{ height: "30px", width: "30px" }}
+                    type="checkbox"
+                    onChange={(event) => onCheckUser(event, user)}
+                  />
                 </div>
                 <div>
                   <p>{`name: ${user.firstName} ${user.secondName}`}</p>
@@ -307,36 +328,48 @@ export const Admin = () => {
       </div>
       <div>
         <h3>Чаты</h3>
-        <div style={{
+        <div
+          style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             gap: "10px",
-          }}>
-                  <input 
-                  checked={areAllChatsChecked}
-                  style={{height: '30px', width: '30px'}}
-                  type='checkbox' onChange={(event) => onCheckAllChats(event)}/>
-            <button onClick={onRemoveChats}>Удалить</button>
-          </div> 
+          }}
+        >
+          <input
+            checked={areAllChatsChecked}
+            style={{ height: "30px", width: "30px" }}
+            type="checkbox"
+            onChange={(event) => onCheckAllChats(event)}
+          />
+          <button onClick={onRemoveChats}>Удалить</button>
+        </div>
         <ul>
           {chats.map((chat) => (
-            <li key={chat.id} style={{listStyle: 'none', border: 'solid 1px', borderRadius: '4px', margin: '4px'}}>
+            <li
+              key={chat.id}
+              style={{
+                listStyle: "none",
+                border: "solid 1px",
+                borderRadius: "4px",
+                margin: "4px",
+              }}
+            >
               <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  alignItems: 'center',
-                  gap: '10px',
+                  alignItems: "center",
+                  gap: "10px",
                 }}
               >
-                                <div>
-                  <input 
-                  checked={
-                    checkedChats.map(({id}) => id).includes(chat.id)
-                  }
-                  style={{height: '30px', width: '30px'}}
-                  type='checkbox' onChange={(event) => onCheckChat(event, chat)}/>
+                <div>
+                  <input
+                    checked={checkedChats.map(({ id }) => id).includes(chat.id)}
+                    style={{ height: "30px", width: "30px" }}
+                    type="checkbox"
+                    onChange={(event) => onCheckChat(event, chat)}
+                  />
                 </div>
                 <div>
                   <p>{`name: ${chat.name}`}</p>
@@ -344,9 +377,9 @@ export const Admin = () => {
                     JSON.parse(chat.messages || "[]")?.length
                   }`}</p>
                 </div>
-              <div>
-                <button onClick={() => onChatRemove(chat)}>Удалить</button>
-              </div>
+                <div>
+                  <button onClick={() => onChatRemove(chat)}>Удалить</button>
+                </div>
               </div>
             </li>
           ))}

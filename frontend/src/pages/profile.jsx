@@ -24,16 +24,14 @@ export const Profile = () => {
   );
 
   const { chats } = useSelector((state) => state.chatsReducer);
-  const {activeChat} = useSelector((state) => state.chatsReducer);
+  const { activeChat } = useSelector((state) => state.chatsReducer);
   const { setChats, setActiveChat } = chatsSlice.actions;
-
 
   const { setUser, setIsAuth } = authSlice.actions;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // const { chats } = useSelector((state) => state.chatsReducer);
-
 
   const fetchChats = async (userId) => {
     if (!userId) {
@@ -59,11 +57,11 @@ export const Profile = () => {
   }, [userId]);
 
   useEffect(() => {
-    console.log({chats})
+    console.log({ chats });
     if (chats.length) {
-      dispatch(setActiveChat(chats[0]))
+      dispatch(setActiveChat(chats[0]));
     }
-  }, [])
+  }, []);
 
   const onLogout = () => {
     dispatch(setIsAuth(false));
@@ -128,17 +126,17 @@ export const Profile = () => {
             }}
           >
             <div>
-              { ['superuser'].includes(role) && (
-              <div>
-              <UsersSearch userId={userId} />
-            </div>)
-
-              }
-              { ['superuser'].includes(role) || chats.length > 1 &&
-              (<div>
-              <ChatList chats={chats}/>
-            </div>)
-              }
+              {["superuser"].includes(role) && (
+                <div>
+                  <UsersSearch userId={userId} />
+                </div>
+              )}
+              {["superuser"].includes(role) ||
+                (chats.length > 1 && (
+                  <div>
+                    <ChatList chats={chats} />
+                  </div>
+                ))}
             </div>
             <div>
               <Messenger

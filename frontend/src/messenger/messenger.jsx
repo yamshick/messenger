@@ -6,14 +6,14 @@ import messageToneRaw from "assets/message-tone.mp3";
 
 moment.locale("ru");
 
-const socket = io();
-
-const messageTone = new Audio(messageToneRaw);
-
 export const Messenger = ({ userName, userId, login, chat }) => {
   // console.log({ chat });
   if (!chat) return null;
 
+  const socket = io();
+
+  const messageTone = new Audio(messageToneRaw);
+  
   const messageContainerRef = useRef();
   const messageContainerDummyDivRef = useRef();
   const [clientsCount, setClientsCount] = useState(1);

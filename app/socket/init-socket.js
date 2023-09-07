@@ -81,32 +81,11 @@ function onSocketConnection({ io, db, socket, socketsConected, rooms }) {
   socket.on("message", async (messageData) => {
     const { name, message, userId, dateTime, login, chat } = messageData;
 
-    const selectMessagesSql =
-      `
-  SELECT * FROM Chats 
-  WHERE id =  
-  ` + chat.id;
+    const selectMessagesSql = `SELECT * FROM Chats WHERE id =  ` + chat.id;
 
     const dbChatInstanceRows = await db_all(db, selectMessagesSql);
     const dbMessages = JSON.parse(dbChatInstanceRows[0].messages);
 
-    // console.log("on message socket", { dbChatInstanceRows, dbMessages });
-
-    //   db.serialize(function () {
-    //     db.all(selectMessagesSql, function (err, rows) {
-    //       if (err) {
-    //         console.error(err);
-    //         // TODO: handle error
-    //       } else {
-
-    //       }
-    //     });
-    //   });
-
-    //   const parsedChatMessages = JSON.parse(chat.messages);
-    //   let chatMessages = Array.isArray(parsedChatMessages)
-    //     ? parsedChatMessages
-    //     : [];
     chatMessages = [
       ...dbMessages,
       {
@@ -119,11 +98,12 @@ function onSocketConnection({ io, db, socket, socketsConected, rooms }) {
         },
       },
     ];
-    chat.messages = chatMessages;
+    // chat.messages = chatMessages;
     // socket.in(chat.id).broadcast.emit("chat-message", messageData);
-    console.log("socket message event", { messageData });
+    // console.log("socket message event", { messageData });
     // console.warn("chatMessages", chatMessages);
-    socket.in(chat.id).emit("chat-message", messageData);
+    console.log('sending message in room: ', chat.id)
+    socket.in(`${chat.id}`).emit("chat-message", messageData);
 
     const sql = `update CHATS set messages = ? where id = ?;`;
 

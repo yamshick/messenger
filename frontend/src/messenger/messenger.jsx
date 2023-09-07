@@ -22,11 +22,6 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   const [messages, setMessages] = useState([]);
   const [feedback, setFeedback] = useState([]);
 
-  socket.on("clients-total", (data) => {
-    console.log("clients-total", { data });
-    setClientsCount(data);
-  });
-
   const onNameChange = (event) => {
     // console.log({event})
     setNameInput(event.target.value);
@@ -65,6 +60,11 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   };
 
   console.log({ messages });
+
+  socket.on("clients-total", (data) => {
+    console.log("clients-total", { data });
+    setClientsCount(data);
+  });
 
   socket.on("chat-message", (data) => {
     console.log({ data });

@@ -54,7 +54,7 @@ module.exports = function (app, db) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     const data = req.body;
-    console.log({ data });
+    console.log("/api/chat/", { data });
     insertChat(req, res, db);
   });
 
@@ -95,7 +95,7 @@ function processChat(req, res, db) {
 
 function insertChat(req, res, db) {
   const { name, userIds: rawUsers } = req.body;
-  console.log({
+  console.log('inserting chat', {
     name,
     rawUsers,
     // chat

@@ -8,7 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { hashRoutes } from "../constants";
 import { Spinner } from "../ui/spinner";
 
-export const Registration = ({onRegister: onRegisterProp}) => {
+export const Registration = ({ onRegister: onRegisterProp }) => {
   const [name, setName] = useState("");
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -139,10 +139,11 @@ export const Registration = ({onRegister: onRegisterProp}) => {
       ) : (
         <>
           <div className={styles.textMessage}>Регистрация прошла успешно</div>
-          {onRegisterProp ? 
-          <Button onClick={onRegisterProp}>Закрыть</Button> :          
-          <Button onClick={onLogin}>Войти</Button>
-        }
+          {onRegisterProp ? (
+            <Button onClick={onRegisterProp}>Закрыть</Button>
+          ) : (
+            <Button onClick={onLogin}>Войти</Button>
+          )}
         </>
       )}
     </div>

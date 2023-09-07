@@ -7,12 +7,13 @@ import {
   fetchUsersThunk,
   updateUserThunk,
   deleteUserThunk,
+  deleteChatThunk,
 } from "../store/reducers/admin-slice";
 import { Registration } from "./registration";
 
 export const Admin = () => {
   const dispatch = useDispatch();
-  const [shouldShowUserAddPanel, setShouldShowUserAddPanel] = useState(false)
+  const [shouldShowUserAddPanel, setShouldShowUserAddPanel] = useState(false);
 
   const { roles, chats, users } = useSelector((state) => state.adminReducer);
   const { setRoles, setChats, setUsers } = adminSlice.actions;
@@ -74,14 +75,22 @@ export const Admin = () => {
   const onUserAdd = () => {
     // TODO
     setShouldShowUserAddPanel(true);
-  }
+  };
+
+  const onChatRemove = async (chat) => {
+    console.warn({ chat });
+    await dispatch(deleteChatThunk({ chat }));
+    fetchChats();
+  };
 
   const onRegister = () => {
-    setShouldShowUserAddPanel(false)
-    fetchUsers()
-  }
+    setShouldShowUserAddPanel(false);
+    fetchUsers();
+  };
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 3 }}>
+    <div
+      style={{ display: "flex", justifyContent: "space-between", gap: "50px" }}
+    >
       {/* <div>
             <h3>Роли</h3>
         <pre>{JSON.stringify(roles, null, 2)}</pre>
@@ -89,19 +98,18 @@ export const Admin = () => {
   */}
       <div>
         <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: 'center',
-                            gap: 3,
-                          }}          
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "30px",
+            // border: 'solid 1px'
+          }}
         >
-            <h3>Пользователи</h3>
-            <button onClick={onUserAdd}> Добавить </button>
+          <h3>Пользователи</h3>
+          <button onClick={onUserAdd}> Добавить </button>
         </div>
-        {shouldShowUserAddPanel && (
-            <Registration onRegister={onRegister}/>
-        )}
+        {shouldShowUserAddPanel && <Registration onRegister={onRegister} />}
         <ul>
           {users.map((user) => (
             <li key={user.id}>
@@ -114,6 +122,7 @@ export const Admin = () => {
               >
                 <div>
                   <p>{`name: ${user.firstName} ${user.secondName}`}</p>
+                  <p>{`id: ${user.id}`}</p>
                   <p>{`login: ${user.login}`}</p>
                 </div>
                 <div
@@ -153,7 +162,30 @@ export const Admin = () => {
       </div>
       <div>
         <h3>Чаты</h3>
-        <pre>{JSON.stringify(chats, null, 2)}</pre>
+        <ul>
+          {chats.map((chat) => (
+            <li key={chat.id}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: 3,
+                }}
+              >
+                <div>
+                  <p>{`name: ${chat.name}`}</p>
+                  <p>{`messages: ${
+                    JSON.parse(chat.messages || "[]")?.length
+                  }`}</p>
+                </div>
+              <div>
+                <button onClick={() => onChatRemove(chat)}>Удалить</button>
+              </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+        {/* <pre>{JSON.stringify(chats, null, 2)}</pre> */}
       </div>
     </div>
   );

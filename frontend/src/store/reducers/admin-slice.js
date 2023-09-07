@@ -48,6 +48,13 @@ export const deleteUserThunk = createAsyncThunk(
   }
 );
 
+export const deleteChatThunk = createAsyncThunk(
+  "admin/delete-chat",
+  async ({ chat }) => {
+    return await httpService.delete(DELETE_CHAT, chat);
+  }
+);
+
 export const adminSlice = createSlice({
   name: "admin",
   initialState: initialState,

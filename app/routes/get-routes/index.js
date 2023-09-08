@@ -129,7 +129,7 @@ module.exports = function (app, db) {
   function sendData(res, data, err) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    console.log("seding data", { data });
+    // console.log("seding data", { data });
     if (data) {
       res.send(data);
     } else {

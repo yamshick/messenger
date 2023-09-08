@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "styles/style.style";
 import { io } from "socket.io-client";
 import moment from "moment";
@@ -6,18 +6,29 @@ import messageToneRaw from "assets/message-tone.mp3";
 
 moment.locale("ru");
 
+const socket = io();
+
+const createRoom = (roomName) => {
+  console.warn('creating room', {roomName})
+  socket.emit("create-room", { roomName}); 
+};
+
+// function callOnly
+
 export const Messenger = ({ userName, userId, login, chat }) => {
   // console.log({ chat });
   if (!chat) return null;
 
-  const socket = io();
-
   const messageTone = new Audio(messageToneRaw);
-  
+
+  const prevChat = useRef(chat);
   const messageContainerRef = useRef();
   const messageContainerDummyDivRef = useRef();
   const [clientsCount, setClientsCount] = useState(1);
   const [nameInput, setNameInput] = useState(userName);
+
+  useMemo(() => createRoom(chat.id), [chat.id]);
+
   // TODO
   useEffect(() => {
     setNameInput(userName);
@@ -75,14 +86,30 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     scrollToBottom(true);
   };
 
-  useEffect(() => {
-    socket.emit("create-room", {
-      name: nameInput,
-      userId,
-      login,
-      chat,
-    });
+  // useEffect(() => {
+  //   console.log({
+  //     curChatid: chat.id,
+  //     prevChatId : prevChat.current.id 
+  //   })
+  //   if (!chat.id) {return}
 
+  //   // if (chat.id === prevChat.current.id) {
+  //   //   return;
+  //   // }
+
+  //   console.log('creating room')
+  //   // socket.emit("create-room", {
+  //   //   name: nameInput,
+  //   //   userId,
+  //   //   login,
+  //   //   chat,
+  //   // });
+
+  //   createRoom(chat.id)
+  //   prevChat.current = chat
+  // }, [chat]);
+
+  useEffect(() => {
     const parsedChatMessages = JSON.parse(chat.messages);
     const chatMessages = Array.isArray(parsedChatMessages)
       ? parsedChatMessages
@@ -96,8 +123,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     );
 
     scrollToBottom(true);
-  }, [chat]);
-
+  }, [chat])
   // console.log({ messages });
 
   socket.on("clients-total", (data) => {
@@ -151,21 +177,13 @@ export const Messenger = ({ userName, userId, login, chat }) => {
         }{" "}
         💬
       </h1>
+      <h1 className="title">
+        {
+`      Чат id:  
+      ${chat.id}`
+        }
+      </h1>
       <div className="main">
-        {/* <div className="name">
-          <span>
-            <i className="far fa-user"></i>
-          </span>
-          <input
-            type="text"
-            id="name-input"
-            className="name-input"
-            value={userName}
-            maxLength="20"
-            // onChange={onNameChange}
-          />
-        </div> */}
-
         <ul
           className="message-container"
           id="message-container"
@@ -206,9 +224,9 @@ export const Messenger = ({ userName, userId, login, chat }) => {
           </button>
         </div>
       </div>
-      {/* <h3 className="clients-total" id="client-total">
+      <h3 className="clients-total" id="client-total">
         Total clients: {clientsCount}
-      </h3> */}
+      </h3>
     </div>
   );
 };

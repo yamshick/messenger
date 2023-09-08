@@ -14,7 +14,7 @@ root.render(
   // <Router>
   <Provider store={store}>
     {/* <React.StrictMode> */}
-      <App />
+    <App />
     {/* </React.StrictMode> */}
   </Provider>
   // </Router>

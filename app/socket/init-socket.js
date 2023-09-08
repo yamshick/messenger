@@ -11,7 +11,6 @@ async function db_all(db, query, params) {
 }
 
 let socketsConected = new Set();
-let rooms = [];
 
 module.exports = function (io, db) {
   io.sockets.on("connection", function (socket) {
@@ -23,19 +22,14 @@ function onSocketConnection({ io, db, socket }) {
   console.log("Socket connected", socket.id);
   socketsConected.add(socket.id);
 
-  const sockeetRooms = io.sockets.adapter.rooms
-  console.log({sockeetRooms})
-  for (const [key, value] of sockeetRooms) {
-    io.in(key).emit('clients-total', value.size)
-  }
   // io.emit("clients-total", socketsConected.size);
 
   socket.on("disconnect", () => {
-    onSocketDisconnect(io, socket)
+    onSocketDisconnect(io, socket);
   });
 
   socket.on("create-room", function (createRoomData) {
-    onCreateRoom({io, socket, createRoomData});
+    onCreateRoom({ io, socket, createRoomData });
   });
 
   socket.on("message", async (messageData) => {
@@ -48,53 +42,30 @@ function onSocketDisconnect(io, socket) {
   socketsConected.delete(socket.id);
   // io.emit("clients-total", socketsConected.size);
 
-  const sockeetRooms = io.sockets.adapter.rooms
+  const sockeetRooms = io.sockets.adapter.rooms;
   for (const [key, value] of sockeetRooms) {
-    io.in(key).emit('clients-total', value.size)
-  }
-  console.log('onSocketDisconnect', {sockeetRooms})
-  return;
-  // removing room
-  try {
-    console.log("rooms", rooms);
-    const room = rooms.find((room) => room?.socketIds?.includes(socket.id));
-
-    if (room) {
-      console.log("found room on disconect", room);
-      // io.in(room.id).socketsLeave("room1");
-      room.socketIds = room?.socketIds?.filter(
-        (socketId) => socketId !== socket.id
-      );
-      if (room?.socketIds?.length === 0) {
-        const roomId = room.id;
-        rooms = rooms?.filter((room) => room.id !== roomId);
-      }
-    }
-  } catch (e) {
-    console.error("removing room error", { e });
+    io.in(key).emit("clients-total", value.size);
   }
 }
 
-function onCreateRoom({io, socket, createRoomData}) {
+function onCreateRoom({ io, socket, createRoomData }) {
   const { roomName } = createRoomData;
-  // console.log({
-  //   createRoomData,
-  //   socketId: socket.id,
-  // });
 
-  const sockeetRooms = io.sockets.adapter.rooms
-  console.log('onCreateRoom', {roomName, sockeetRooms})
+  const sockeetRooms = io.sockets.adapter.rooms;
 
-  const _roomId = `${roomName}`; 
+  const _roomId = `${roomName}`;
   if (sockeetRooms[_roomId] && sockeetRooms[_roomId].has(socket.id)) {
     return;
   }
 
   socket.join(_roomId);
 
-  // console.log('onCreateRoom', {roomName, sockeetRooms})
+  for (const [key, value] of sockeetRooms) {
+    io.in(key).emit("clients-total", value.size);
+  }
+
 }
- 
+
 async function onSocketMessage(socket, db, messageData) {
   const { name, message, userId, dateTime, login, chat } = messageData;
 
@@ -115,18 +86,12 @@ async function onSocketMessage(socket, db, messageData) {
       },
     },
   ];
-  // chat.messages = chatMessages;
-  // socket.in(chat.id).broadcast.emit("chat-message", messageData);
-  // console.log("socket message event", { messageData });
-  // console.warn("chatMessages", chatMessages);
-  console.log('sending message in room: ', chat.id, 
-  messageData.message)
+  // console.log("sending message in room: ", chat.id, messageData.message);
   socket.in(`${chat.id}`).emit("chat-message", messageData);
 
   const sql = `update CHATS set messages = ? where id = ?;`;
 
   const stringifiedMessages = JSON.stringify(chatMessages);
-  // console.log([stringifiedMessages]);
   const values = [stringifiedMessages, chat.id];
 
   db.serialize(function () {
@@ -140,4 +105,3 @@ async function onSocketMessage(socket, db, messageData) {
     });
   });
 }
-    

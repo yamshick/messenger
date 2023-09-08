@@ -9,8 +9,8 @@ moment.locale("ru");
 const socket = io();
 
 const createRoom = (roomName) => {
-  console.warn('creating room', {roomName})
-  socket.emit("create-room", { roomName}); 
+  console.warn("creating room", { roomName });
+  socket.emit("create-room", { roomName });
 };
 
 // function callOnly
@@ -89,7 +89,7 @@ export const Messenger = ({ userName, userId, login, chat }) => {
   // useEffect(() => {
   //   console.log({
   //     curChatid: chat.id,
-  //     prevChatId : prevChat.current.id 
+  //     prevChatId : prevChat.current.id
   //   })
   //   if (!chat.id) {return}
 
@@ -123,11 +123,11 @@ export const Messenger = ({ userName, userId, login, chat }) => {
     );
 
     scrollToBottom(true);
-  }, [chat])
+  }, [chat]);
   // console.log({ messages });
 
   socket.on("clients-total", (data) => {
-    // console.log("clients-total", { data });
+    console.log("clients-total", { data });
     setClientsCount(data);
   });
 
@@ -178,10 +178,8 @@ export const Messenger = ({ userName, userId, login, chat }) => {
         💬
       </h1>
       <h1 className="title">
-        {
-`      Чат id:  
-      ${chat.id}`
-        }
+        {`      Чат id:  
+      ${chat.id}`}
       </h1>
       <div className="main">
         <ul
@@ -224,9 +222,9 @@ export const Messenger = ({ userName, userId, login, chat }) => {
           </button>
         </div>
       </div>
-      <h3 className="clients-total" id="client-total">
+      {/* <h3 className="clients-total" id="client-total">
         Total clients: {clientsCount}
-      </h3>
+      </h3> */}
     </div>
   );
 };

@@ -63,7 +63,6 @@ function onCreateRoom({ io, socket, createRoomData }) {
   for (const [key, value] of sockeetRooms) {
     io.in(key).emit("clients-total", value.size);
   }
-
 }
 
 async function onSocketMessage(socket, db, messageData) {
